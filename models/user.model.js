@@ -6,22 +6,22 @@ const bcrypt = require("bcryptjs");
 const User = seq1.define(
   "User",
   {
-    User_ID: {
+    User_Id: {
       type: Sequelize.INTEGER,
       required: true,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
-      minvalue: 1,
+      minvalue: 12,
     },
-    username: {
+    Username: {
       type: Sequelize.STRING,
       required: true,
       allowNull: false,
       unique: true,
       trim: true,
     },
-    password: {
+    Password: {
       type: Sequelize.STRING,
       allowNull: false,
       required: true,
@@ -39,7 +39,7 @@ const User = seq1.define(
       // does not be included in the results returned by queries.
     },
 
-    email: {
+    Email: {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true,
@@ -51,15 +51,15 @@ const User = seq1.define(
         }
       },
     },
-    role: {
+    Role: {
       type: Sequelize.STRING,
       enum: ["admin", "doctor", "patient"],
       default: "patient",
     },
-    is_Email_Verified: {
-      tybe: Sequelize.BOOLEAN,
-      default: false,
-    },
+    // is_Email_Verified: {
+    //   tybe: Sequelize.BOOLEAN,
+    //   default: false,
+    // },
   },
 
   {
@@ -77,7 +77,10 @@ const User = seq1.define(
     },
   },
   {
-    tableName: "User",
+    tableName: "user",
+  },
+  {
+    freezeTableName: true, // Set this to true to use a singular table name
   },
   {
     timestamps: true,
@@ -101,7 +104,7 @@ User.isEmailTaken = async function (email, excludeUserId) {
 
 User.prototype.isPasswordMatch = async function (password) {
   const user = this;
-  return bcrypt.compare(password, user.password);
+  return bcrypt.compare(password, user.Password);
 };
 
 module.exports = User;
