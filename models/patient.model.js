@@ -29,7 +29,8 @@ const Patient = seq1.define(
     },
     National_Id: {
       type: Sequelize.BIGINT,
-      allowNull: false,
+        allowNull: false,
+      minLength:14,
     },
     Birth_Date: {
       type: Sequelize.DATE,
