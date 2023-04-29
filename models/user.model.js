@@ -90,11 +90,11 @@ const User = seq1.define(
 User.isEmailTaken = async function (email, excludeUserId) {
   // isEmailTaken is a static method that can be called directly from the model
   // isEmailTaken is a custom class method added to a Sequelize model.
-  const user = await User.findOne({
+  const User = await User.findOne({
     where: { email, id: { [Sequelize.Op.ne]: excludeUserId } },
     //   the $ne (not equal) operator is used to compare two values (for inequality)
   });
-  return !!user;
+  return !!User;
 };
 
 // The [Sequelize.Op.ne] syntax is used to generate a "not equal" query operator for the id field.
@@ -103,8 +103,12 @@ User.isEmailTaken = async function (email, excludeUserId) {
 // This syntax allows for more advanced and flexible querying in Sequelize.
 
 User.prototype.isPasswordMatch = async function (password) {
-  const user = this;
-  return bcrypt.compare(password, user.Password);
+  const User = this;
+  return bcrypt.compare(password, User.Password);
 };
-
+User.prototype.toJSON = function() {
+  const values = Object.assign({}, this.get());
+  delete values.Password;
+  return values;
+};
 module.exports = User;
