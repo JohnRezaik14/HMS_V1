@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 
-const seq1 = require("../util/DB");
+const seq1 = require("../utils/DB");
 
 const Patient = seq1.define(
   "patient",
