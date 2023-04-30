@@ -97,13 +97,13 @@ const updateUserById = async (User_Id, updateBody) => {
  * @param {ObjectId} userId
  * @returns {Promise<User>}
  */
-const deleteUserById = async (userId) => {
-  const user = await getUserById(userId);
-  if (!user) {
+const deleteUserById = async (User_Id) => {
+  const User = await findByPk(User_Id);
+  if (!User) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
-  await user.remove();
-  return user;
+  await User.destroy();
+  return User;
 };
 
 module.exports = {

@@ -21,13 +21,18 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "http-status": "^1.6.2",
+    "joi": "^17.9.2",
+    "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.2.4",
     "nodemon": "^2.0.22",
     "path": "^0.12.7",
     "sequelize": "^6.31.0",
-    "validator": "^13.9.0"
+    "swagger": "^0.7.5",
+    "validator": "^13.9.0",
+    "winston": "^3.8.2"
   }
 }
