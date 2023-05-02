@@ -1,9 +1,9 @@
-const seq1 = require("../utils/DB");
+const sequelize = require("../utils/DB");
 const validator = require("validator");
 const Sequelize = require("sequelize");
 const bcrypt = require("bcryptjs");
 // const { toJSON, paginate } = require("./plugins");
-const User = seq1.define(
+const User = sequelize.define(
   "User",
   {
     User_Id: {

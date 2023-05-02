@@ -3,21 +3,21 @@ components:
     User:
       type: object
       properties:
-        id:
+        User_Id:
+          type: integer
+        Email:
           type: string
-        email:
+          format: Email
+        Username:
           type: string
-          format: email
-        name:
-          type: string
-        role:
+        Role:
           type: string
           enum: [user, admin]
       example:
-        id: 5ebac534954b54139806c112
-        email: fake@example.com
-        name: fake name
-        role: user
+        User_Id: 1200560589898789975
+        Email: fake@example.com
+       Username: fake Username
+        Role: user
 
     Token:
       type: object
@@ -66,15 +66,15 @@ components:
           example:
             code: 401
             message: Please authenticate
-    Forbidden:
-      description: Forbidden
+    ForbUser_Idden:
+      description: ForbUser_Idden
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Error"
           example:
             code: 403
-            message: Forbidden
+            message: ForbUser_Idden
     NotFound:
       description: Not found
       content:

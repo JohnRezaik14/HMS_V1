@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const Seq1 = new Sequelize("hospital_2", "Node", "123456789*", {
+const sequelize = new Sequelize("hospital_2", "Node", "123456789*", {
   dialect: "mysql",
   host: "localhost",
   define: {
@@ -7,4 +7,4 @@ const Seq1 = new Sequelize("hospital_2", "Node", "123456789*", {
   },
 });
 
-module.exports = Seq1;
+module.exports = sequelize;

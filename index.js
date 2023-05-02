@@ -4,7 +4,7 @@ const app = express();
 
 const path = require("path");
 
-const User = require("./models/User.model");
+const User = require("./models/user.model");
 const Patient = require("./models/patient.model");
 
 const seq1 = require("./utils/DB");
@@ -27,25 +27,24 @@ app.listen(port, () => {
 //   Patient.findAll().then((result) => {
 //     console.log(result);
 
-//   });
-// Patient.findByPk(9).then((result) => {
-//   console.log(result);
-
 // });
+Patient.findByPk(8).then((result) => {
+  console.log(result);
+});
 
-Patient.belongsTo(User, {
-  foreignKey: "User_Id",
-  targetKey: "User_Id",
-  constraints: true,
-  onDelete: "cascade",
-  onUpdate: "cascade",
-});
-User.hasOne(Patient);
-seq1.sync().then((result) => {
-  console.log(result[1]);
-}).catch((err) => {
-  console.log(err);
-});
+// Patient.belongsTo(User, {
+//   foreignKey: "User_Id",
+//   targetKey: "User_Id",
+//   constraints: true,
+//   onDelete: "cascade",
+//   onUpdate: "cascade",
+// });
+// User.hasOne(Patient);
+// seq1.sync().then((result) => {
+//   console.log(result);
+// }).catch((err) => {
+//   console.log(err);
+// });
 // Patient.create({ }).then((result) => {
 //   console.log(result);
 // }).catch((err) => {
