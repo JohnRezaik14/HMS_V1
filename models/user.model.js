@@ -2,6 +2,7 @@ const sequelize = require("../utils/DB");
 const validator = require("validator");
 const Sequelize = require("sequelize");
 const bcrypt = require("bcryptjs");
+const {Op}  = require("sequelize");
 // const { toJSON, paginate } = require("./plugins");
 const User = sequelize.define(
   "User",
@@ -84,19 +85,21 @@ const User = sequelize.define(
   },
   {
     timestamps: true,
-  }
+  },
+  console.log("User table created successfully")
 );
 
 User.isEmailTaken = async function (email, excludeUserId) {
   // isEmailTaken is a static method that can be called directly from the model
   // isEmailTaken is a custom class method added to a Sequelize model.
   const User = await User.findOne({
-    where: { email, id: { [Sequelize.Op.ne]: excludeUserId } },
-    //   the $ne (not equal) operator is used to compare two values (for inequality)
+    where: { email, id: { [Op.ne]: excludeUserId } },
+    
+    
   });
   return !!User;
 };
-
+console.log("passed isEmailTaken in user.model.js");
 // The [Sequelize.Op.ne] syntax is used to generate a "not equal" query operator for the id field.
 // It's an example of using an operator in Sequelize's Object syntax
 // , where you can use Sequelize.Op to get the operators.
@@ -104,11 +107,13 @@ User.isEmailTaken = async function (email, excludeUserId) {
 
 User.prototype.isPasswordMatch = async function (password) {
   const User = this;
-  return bcrypt.compare(password, User.Password);
+  console.log("passed isPasswordMatch in user.model.js");
+  return bcrypt.compare(password, User.Password)
 };
 User.prototype.toJSON = function() {
   const values = Object.assign({}, this.get());
   delete values.Password;
+  console.log("passed toJSON in user.model.js");
   return values;
 };
 module.exports = User;

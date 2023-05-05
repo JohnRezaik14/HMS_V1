@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes ,Op} = require("sequelize");
 const sequelize = require("../utils/DB");
 const { tokenTypes } = require("../config/tokens");
 const User = require("./user.model");
@@ -49,8 +49,8 @@ Token.belongsTo(User);
 // Add toJSON method to convert model instance to plain JSON object
 Token.prototype.toJSON = function () {
   const values = Object.assign({}, this.get());
-  delete values.createdAt;
-  delete values.updatedAt;
+  // delete values.createdAt;
+  // delete values.updatedAt;
   return values;
 };
 // Token.sync().then((result) => {

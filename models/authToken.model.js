@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../utils/DB");
-const { User } = require("./user.model");
+const { User } = require("./index");
 
 const AuthToken = sequelize.define("AuthToken", {
   token: {

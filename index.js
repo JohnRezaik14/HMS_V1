@@ -17,7 +17,7 @@ const ApiError = require('./utils/ApiError');
 
 const app = express();
 
-
+// console.log(config.jwt)
 
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
@@ -38,8 +38,17 @@ app.use(compression());
 
 
 // enable cors
+// cors is  standard for access control for cross-origin resource sharing (CORS) 
+// on various browsers. It allows a server to indicate any other origins (domain, scheme, or port)
 app.use(cors());
 app.options('*', cors());
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.setHeader('Access-Control-Expose-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+});
+  
 
 // jwt authentication
 app.use(passport.initialize());
@@ -50,7 +59,7 @@ passport.use('jwt', jwtStrategy);
 app.use(express.json());
 
 // parse urlencoded request body
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); //x-www-form-urlencoded <form>
 
 app.use(bodyParser.json());
 
