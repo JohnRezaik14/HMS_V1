@@ -1,7 +1,7 @@
 const allRoles = {
   user: [],
   patient: [],
-  doctor: [getUser, updateUser,getUsers,createDiagnose,updateDiagnose,deleteDiagnose,createPrescription,updatePrescription,deletePrescription,createAppointment,updateAppointment,deleteAppointment],
+  doctor: ['createDiagnose','updateDiagnose','deleteDiagnose','createAppointment','updateAppointment','deleteAppointment'],
   admin: ['getUsers', 'manageUsers'],
 };
 

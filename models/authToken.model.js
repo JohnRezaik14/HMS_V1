@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../utils/DB");
 const { User } = require("./user.model");
+
 const AuthToken = sequelize.define("AuthToken", {
   token: {
     type: DataTypes.STRING,
@@ -12,13 +13,14 @@ const AuthToken = sequelize.define("AuthToken", {
     allowNull: false,
     references: {
       model: "User",
-      key: "id",
+      key: "User_Id",
     },
+    foreignKey: "User_Id",
   },
   expiresAt: {
     type: DataTypes.DATE,
     allowNull: false,
   },
 });
-AuthToken.belongsTo(User, { foreignKey: "User_Id" });
+// AuthToken.belongsTo(User, { foreignKey: "User_Id" });
 module.exports = AuthToken;

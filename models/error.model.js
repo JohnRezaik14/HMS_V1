@@ -12,4 +12,5 @@ const Error = sequelize.define('Error', {
   },
 });
 
+
 module.exports = Error;

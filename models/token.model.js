@@ -18,9 +18,10 @@ const Token = sequelize.define("Token", {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'User',
-            key: 'id',
-        },
+            model: 'user',
+            key: 'User_Id',
+      },
+        foreignKey: 'User_Id',
     },
   type: {
     type: DataTypes.ENUM,
@@ -52,5 +53,9 @@ Token.prototype.toJSON = function () {
   delete values.updatedAt;
   return values;
 };
-
+// Token.sync().then((result) => {
+//   console.log(result);
+// }).catch((err) => {
+//   console.log(err);
+// });
 module.exports = Token;
