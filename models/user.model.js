@@ -2,7 +2,8 @@ const sequelize = require("../utils/DB");
 const validator = require("validator");
 const Sequelize = require("sequelize");
 const bcrypt = require("bcryptjs");
-const {Op}  = require("sequelize");
+const { Op, Model } = require("sequelize");
+const { use } = require("passport");
 // const { toJSON, paginate } = require("./plugins");
 const User = sequelize.define(
   "User",
@@ -94,8 +95,6 @@ User.isEmailTaken = async function (Email, excludeUserId) {
   // isEmailTaken is a custom class method added to a Sequelize model.
   const User = await this.findOne({
     where: { Email, User_Id: { [Op.ne]: excludeUserId } },
-    
-    
   });
   return !!User;
 };
@@ -105,12 +104,14 @@ console.log("passed isEmailTaken in user.model.js");
 // , where you can use Sequelize.Op to get the operators.
 // This syntax allows for more advanced and flexible querying in Sequelize.
 
-User.isPasswordMatch = async function (password,hashedPassword) {
-  // const User = this;
+User.isPasswordMatch = async function (password) {
+  const user = this;
   console.log("passed isPasswordMatch in user.model.js");
-  return bcrypt.compare(password, hashedPassword)
+  return bcrypt.compare(password, user.password);
 };
-User.prototype.toJSON = function() {
+
+
+User.prototype.toJSON = function () {
   const values = Object.assign({}, this.get());
   delete values.Password;
   console.log("passed toJSON in user.model.js");

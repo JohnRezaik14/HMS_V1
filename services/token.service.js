@@ -69,7 +69,7 @@ const verifyToken = async (token, type) => {
  * @returns {Promise<Object>}
  */
 const generateAuthTokens = async (user) => {
-  const currentUser = await userService.getUserByEmail(user.email);
+  const currentUser = await userService.getUserByEmail(user.Email);
   // const fullUser = await User.findOne({ where: { Email: user.Email } });
   const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
   const accessToken = generateToken(currentUser.User_Id, accessTokenExpires, tokenTypes.ACCESS);
@@ -112,7 +112,7 @@ const generateResetPasswordToken = async (email) => {
  * @returns {Promise<string>}
  */
 const generateVerifyEmailToken = async (user) => {
-  const currentUser = await userService.getUserByEmail(user.email);
+  const currentUser = await userService.getUserByEmail(user.Email);
   const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
   const verifyEmailToken = generateToken(currentUser.User_Id, expires, tokenTypes.VERIFY_EMAIL);
   await saveToken(verifyEmailToken, currentUser.User_Id, expires, tokenTypes.VERIFY_EMAIL);
