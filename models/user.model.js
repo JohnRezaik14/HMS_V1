@@ -17,8 +17,8 @@ const User = sequelize.define(
     },
     Username: {
       type: Sequelize.STRING,
-      required: true,
-      allowNull: false,
+      required: false,
+      allowNull: true,
       unique: true,
       trim: true,
     },
@@ -89,11 +89,11 @@ const User = sequelize.define(
   console.log("User table created successfully")
 );
 
-User.isEmailTaken = async function (email, excludeUserId) {
+User.isEmailTaken = async function (Email, excludeUserId) {
   // isEmailTaken is a static method that can be called directly from the model
   // isEmailTaken is a custom class method added to a Sequelize model.
-  const User = await User.findOne({
-    where: { email, id: { [Op.ne]: excludeUserId } },
+  const User = await this.findOne({
+    where: { Email, User_Id: { [Op.ne]: excludeUserId } },
     
     
   });
@@ -105,10 +105,10 @@ console.log("passed isEmailTaken in user.model.js");
 // , where you can use Sequelize.Op to get the operators.
 // This syntax allows for more advanced and flexible querying in Sequelize.
 
-User.prototype.isPasswordMatch = async function (password) {
-  const User = this;
+User.isPasswordMatch = async function (password,hashedPassword) {
+  // const User = this;
   console.log("passed isPasswordMatch in user.model.js");
-  return bcrypt.compare(password, User.Password)
+  return bcrypt.compare(password, hashedPassword)
 };
 User.prototype.toJSON = function() {
   const values = Object.assign({}, this.get());

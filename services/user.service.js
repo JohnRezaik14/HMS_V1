@@ -1,18 +1,39 @@
 const httpStatus = require("http-status");
 const { User } = require("../models");
 const ApiError = require("../utils/ApiError");
-
+const express = require("express");
+const bcrypt = require("bcryptjs");
+const saltRounds = 10;
 /**
  * Create a user
  * @param {Object} userBody
  * @returns {Promise<User>}
  */
 const createUser = async (userBody) => {
-  if (await User.isEmailTaken(userBody.Email)) {
+  let password = userBody.Password;
+  
+  const email = userBody.Email;
+  if (email == undefined) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "email is undefined");
+  }
+  if (await User.isEmailTaken(email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");
   }
-  return User.create(userBody);
-};
+  const hash = await bcrypt.hash(password, saltRounds);
+  
+    
+   
+     
+  return User.create({
+    Email: userBody.Email,
+    Password: hash,
+  });
+ 
+}
+      
+    
+  
+
 
 /**
  * Query for users
@@ -56,15 +77,14 @@ const getUserById = async (User_Id) => {
  * @param {string} email
  * @returns {Promise<User>}
  */
-const getUserByEmail = async (Email) => {
-  const User = await User.findOne({
-    where: {
-      Email: Email,
-    },
-  });
-  return User;
-};
+const getUserByEmail = async (email) => {
 
+  return User.findOne({
+    where: {
+      Email: email,
+    }
+  });
+};
 /**
  * Update user by id
  * @param {ObjectId} userId
@@ -82,7 +102,7 @@ const updateUserById = async (User_Id, updateBody) => {
   if (
     updateBody.email &&
     (await User.findOne({
-      where: { Email: updateBody.Email, id: { [Op.ne]: User_Id } },
+      where: { Email: updateBody.Email, User_Id: { [Op.ne]: User_Id } },
     }))
   ) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");

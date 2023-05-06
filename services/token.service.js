@@ -3,10 +3,11 @@ const moment = require('moment');
 const httpStatus = require('http-status');
 const config = require('../config/config');
 const userService = require('./user.service');
-const { Token } = require('../models');
+// const { Token } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
-
+const Token = require('../models/token.model');
+const User = require('../models/user.model');
 /**
  * Generate token
  * @param {ObjectId} userId
@@ -15,6 +16,7 @@ const { tokenTypes } = require('../config/tokens');
  * @param {string} [secret]
  * @returns {string}
  */
+
 const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
   const payload = {
     sub: userId,
@@ -34,10 +36,11 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
  * @param {boolean} [blacklisted]
  * @returns {Promise<Token>}
  */
-const saveToken = async (token, userId, expires, type, blacklisted = false) => {
+const saveToken = async (token, User_Id, expires, type, blacklisted = false) => {
+  
   const tokenDoc = await Token.create({
     token,
-    user: userId,
+    User_Id: User_Id,
     expires: expires.toDate(),
     type,
     blacklisted,
@@ -66,12 +69,14 @@ const verifyToken = async (token, type) => {
  * @returns {Promise<Object>}
  */
 const generateAuthTokens = async (user) => {
+  const currentUser = await userService.getUserByEmail(user.email);
+  // const fullUser = await User.findOne({ where: { Email: user.Email } });
   const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
-  const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
+  const accessToken = generateToken(currentUser.User_Id, accessTokenExpires, tokenTypes.ACCESS);
 
   const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days');
-  const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
-  await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
+  const refreshToken = generateToken(currentUser.User_Id, refreshTokenExpires, tokenTypes.REFRESH);
+  await saveToken(refreshToken, currentUser.User_Id, refreshTokenExpires, tokenTypes.REFRESH);
 
   return {
     access: {
@@ -96,8 +101,8 @@ const generateResetPasswordToken = async (email) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
   }
   const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
-  const resetPasswordToken = generateToken(user.id, expires, tokenTypes.RESET_PASSWORD);
-  await saveToken(resetPasswordToken, user.id, expires, tokenTypes.RESET_PASSWORD);
+  const resetPasswordToken = generateToken(user.User_Id, expires, tokenTypes.RESET_PASSWORD);
+  await saveToken(resetPasswordToken, user.User_Id, expires, tokenTypes.RESET_PASSWORD);
   return resetPasswordToken;
 };
 
@@ -107,9 +112,10 @@ const generateResetPasswordToken = async (email) => {
  * @returns {Promise<string>}
  */
 const generateVerifyEmailToken = async (user) => {
+  const currentUser = await userService.getUserByEmail(user.email);
   const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
-  const verifyEmailToken = generateToken(user.id, expires, tokenTypes.VERIFY_EMAIL);
-  await saveToken(verifyEmailToken, user.id, expires, tokenTypes.VERIFY_EMAIL);
+  const verifyEmailToken = generateToken(currentUser.User_Id, expires, tokenTypes.VERIFY_EMAIL);
+  await saveToken(verifyEmailToken, currentUser.User_Id, expires, tokenTypes.VERIFY_EMAIL);
   return verifyEmailToken;
 };
 

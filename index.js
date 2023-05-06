@@ -43,11 +43,11 @@ app.use(compression());
 app.use(cors());
 app.options('*', cors());
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.setHeader('Access-Control-Expose-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
-});
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+//   res.setHeader('Access-Control-Expose-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+// });
   
 
 // jwt authentication
@@ -92,9 +92,23 @@ app.listen(port, () => {
 
 
 
-// const User = require("./models/user.model");
+const User = require("./models/user.model");
 // const Patient = require("./models/patient.model");
 // const seq1 = require("./utils/DB");
+
+// const getUserByEmail = async (email) => {
+
+//   return User.findOne({
+//     where: {
+//       Email: email,
+//     }
+//   });
+// };
+// getUserByEmail("John.lamei.12@gmail.com").then((result) => {
+//   console.log(result);
+// }).catch((err) => {
+//   console.log(err);
+// });
 
 // AuthToken.sync().then((result) => {
 //   console.log(result);
@@ -134,7 +148,9 @@ app.listen(port, () => {
 // }).catch((err) => {
 //   console.log(err);
 // });
-// Patient.create({ }).then((result) => {
+// User.create({  "Username":"Badieh",
+//     "Email": "Badieh@gmail.com",
+//     "Password":"123456789"}).then((result) => {
 //   console.log(result);
 // }).catch((err) => {
 //   console.log(err);

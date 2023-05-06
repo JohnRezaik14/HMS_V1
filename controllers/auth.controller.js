@@ -1,16 +1,18 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
+const { User } = require('../models');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
-  const tokens = await tokenService.generateAuthTokens(user);
+  const fullUser = await User.findOne({ where: { Email: req.body.Email } });
+  const tokens = await tokenService.generateAuthTokens(fullUser);
   res.status(httpStatus.CREATED).send({ user, tokens });
 });
 
 const login = catchAsync(async (req, res) => {
-  const { email, password } = req.body;
-  const user = await authService.loginUserWithEmailAndPassword(email, password);
+  const { Email, Password } = req.body;
+  const user = await authService.loginUserWithEmailAndPassword(Email, Password);
   const tokens = await tokenService.generateAuthTokens(user);
   res.send({ user, tokens });
 });
