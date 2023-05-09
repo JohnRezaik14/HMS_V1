@@ -12,9 +12,11 @@ const User  = require('../models/user.model');
  * @returns {Promise<User>}
  */
 const loginUserWithEmailAndPassword = async (email, password) => {
+  console.log(email+" "+password+" "+"auth.service.js.15");
   const user = await userService.getUserByEmail(email);
-  if (!user || !(await User.isPasswordMatch(password))) {
-    throw new ApiError(httpStatus.UNAUTHORIZED,email+password, 'Incorrect email or password');
+  console.log(JSON.stringify(user)+" "+"auth.service.js.17");
+  if (!user || !(await userService.isPasswordMatch(email,password))) {
+    throw new ApiError(httpStatus.UNAUTHORIZED,email+" "+password+" "+ 'Incorrect email or password');
   }
   return user;
 };
