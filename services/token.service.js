@@ -36,11 +36,11 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
  * @param {boolean} [blacklisted]
  * @returns {Promise<Token>}
  */
-const saveToken = async (token, User_Id, expires, type, blacklisted = false) => {
+const saveToken = async (token, userId, expires, type, blacklisted = false) => {
   
   const tokenDoc = await Token.create({
     token,
-    User_Id: User_Id,
+    userId: userId,
     expires: expires.toDate(),
     type,
     blacklisted,
@@ -72,11 +72,11 @@ const generateAuthTokens = async (user) => {
   const currentUser = await userService.getUserByEmail(user.email);
   // const fullUser = await User.findOne({ where: { Email: user.Email } });
   const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
-  const accessToken = generateToken(currentUser.User_Id, accessTokenExpires, tokenTypes.ACCESS);
+  const accessToken = generateToken(currentUser.userId, accessTokenExpires, tokenTypes.ACCESS);
 
   const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days');
-  const refreshToken = generateToken(currentUser.User_Id, refreshTokenExpires, tokenTypes.REFRESH);
-  await saveToken(refreshToken, currentUser.User_Id, refreshTokenExpires, tokenTypes.REFRESH);
+  const refreshToken = generateToken(currentUser.userId, refreshTokenExpires, tokenTypes.REFRESH);
+  await saveToken(refreshToken, currentUser.userId, refreshTokenExpires, tokenTypes.REFRESH);
 
   return {
     access: {
@@ -101,8 +101,8 @@ const generateResetPasswordToken = async (email) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
   }
   const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
-  const resetPasswordToken = generateToken(user.User_Id, expires, tokenTypes.RESET_PASSWORD);
-  await saveToken(resetPasswordToken, user.User_Id, expires, tokenTypes.RESET_PASSWORD);
+  const resetPasswordToken = generateToken(user.userId, expires, tokenTypes.RESET_PASSWORD);
+  await saveToken(resetPasswordToken, user.userId, expires, tokenTypes.RESET_PASSWORD);
   return resetPasswordToken;
 };
 
@@ -114,8 +114,8 @@ const generateResetPasswordToken = async (email) => {
 const generateVerifyEmailToken = async (user) => {
   const currentUser = await userService.getUserByEmail(user.email);
   const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
-  const verifyEmailToken = generateToken(currentUser.User_Id, expires, tokenTypes.VERIFY_EMAIL);
-  await saveToken(verifyEmailToken, currentUser.User_Id, expires, tokenTypes.VERIFY_EMAIL);
+  const verifyEmailToken = generateToken(currentUser.userId, expires, tokenTypes.VERIFY_EMAIL);
+  await saveToken(verifyEmailToken, currentUser.userId, expires, tokenTypes.VERIFY_EMAIL);
   return verifyEmailToken;
 };
 

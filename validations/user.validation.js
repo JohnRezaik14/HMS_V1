@@ -6,17 +6,19 @@ const createUser = {
     email: Joi.string().required().email(),
     password: Joi.string().required().custom(password),
     name: Joi.string().required(),
-    role: Joi.string().required().valid('user', 'admin'),
+    role: Joi.string().required().valid('user', 'admin',"patient","doctor"),
   }),
 };
 
 const getUsers = {
   query: Joi.object().keys({
-    name: Joi.string(),
+    username: Joi.string(),
     role: Joi.string(),
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
+    email: Joi.string(),
+    userId: Joi.any(),
   }),
 };
 
