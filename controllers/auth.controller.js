@@ -25,7 +25,7 @@ const login = catchAsync(async (req, res) => {
 
 const logout = catchAsync(async (req, res) => {
   await authService.logout(req.body.refreshToken);
-  res.status(httpStatus.NO_CONTENT).send();
+  res.status(httpStatus.NO_CONTENT,"Logged out").send();
 });
 
 const refreshTokens = catchAsync(async (req, res) => {
@@ -36,7 +36,7 @@ const refreshTokens = catchAsync(async (req, res) => {
 const forgotPassword = catchAsync(async (req, res) => {
   const resetPasswordToken = await tokenService.generateResetPasswordToken(req.body.email);
   await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken);
-  res.status(httpStatus.NO_CONTENT).send();
+  res.status(httpStatus.NO_CONTENT,"").send();
 });
 
 const resetPassword = catchAsync(async (req, res) => {

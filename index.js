@@ -89,11 +89,33 @@ app.listen(port, () => {
 //   res.setHeader('Access-Control-Expose-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
 // });
   
-
-
-
-// const User = require("./models/user.model");
 // const Patient = require("./models/patient.model");
+const User = require("./models/user.model");
+// const Doctor = require("./models/doctor.model");
+
+
+
+
+
+
+
+
+
+
+
+
+// const getuser = async (userId) => {
+//   const user = await Doctor.findAll({ where: { departmentId: userId } });
+//   return user;
+
+// };
+// getuser(3).then((result) => {
+//   console.log(result);
+// }).catch((err) => {
+//   console.log(err);
+// });
+
+
 // const seq1 = require("./utils/DB");
 // Doctor.create().then((result) => {
 //   console.log(result);

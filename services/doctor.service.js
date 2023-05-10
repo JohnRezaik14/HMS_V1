@@ -6,6 +6,9 @@ const express = require("express");
 const queryDoctors = async () => {
     return Doctor.findAll();
 }
+const queryDoctorsDepartment = async (departmentId) => {
+    return Doctor.findAll({ where: { departmentId: departmentId } });
+}
 module.exports = {
     queryDoctors,
 };

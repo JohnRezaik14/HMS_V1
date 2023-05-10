@@ -18,7 +18,8 @@ const getUsers = {
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
     email: Joi.string(),
-    userId: Joi.any(),
+    userId: Joi.number().integer(),
+    pageSize: Joi.number().integer(),
   }),
 };
 

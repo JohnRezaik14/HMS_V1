@@ -5,6 +5,7 @@ const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
 const User  = require('../models/user.model');
+
 /**
  * Login with username and password
  * @param {string} email
@@ -27,11 +28,13 @@ const loginUserWithEmailAndPassword = async (email, password) => {
  * @returns {Promise}
  */
 const logout = async (refreshToken) => {
-  const refreshTokenDoc = await Token.findOne({ token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false });
+  const refreshTokenDoc = await Token.findOne({ Where: { token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false }, });
+  console.log(JSON.stringify(refreshTokenDoc)+" "+"auth.service.js.31");
   if (!refreshTokenDoc) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
   }
-  await refreshTokenDoc.remove();
+  await refreshTokenDoc.destroy();
+  
 };
 
 /**
@@ -40,13 +43,16 @@ const logout = async (refreshToken) => {
  * @returns {Promise<Object>}
  */
 const refreshAuth = async (refreshToken) => {
+  // console.log(refreshToken+" "+"auth.service.js.46");
   try {
     const refreshTokenDoc = await tokenService.verifyToken(refreshToken, tokenTypes.REFRESH);
-    const user = await userService.getUserById(refreshTokenDoc.user);
+    // console.log(JSON.stringify(refreshTokenDoc)+" "+"auth.service.js.49");
+    const user = await userService.getUserById(refreshTokenDoc.userId);
+    // console.log(JSON.stringify(user)+" "+"auth.service.js.51");
     if (!user) {
       throw new Error();
     }
-    await refreshTokenDoc.remove();
+    await refreshTokenDoc.destroy();
     return tokenService.generateAuthTokens(user);
   } catch (error) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
@@ -62,7 +68,7 @@ const refreshAuth = async (refreshToken) => {
 const resetPassword = async (resetPasswordToken, newPassword) => {
   try {
     const resetPasswordTokenDoc = await tokenService.verifyToken(resetPasswordToken, tokenTypes.RESET_PASSWORD);
-    const user = await userService.getUserById(resetPasswordTokenDoc.user);
+    const user = await userService.getUserById(resetPasswordTokenDoc.userId);
     if (!user) {
       throw new Error();
     }
@@ -81,7 +87,7 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
 const verifyEmail = async (verifyEmailToken) => {
   try {
     const verifyEmailTokenDoc = await tokenService.verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
-    const user = await userService.getUserById(verifyEmailTokenDoc.user);
+    const user = await userService.getUserById(verifyEmailTokenDoc.userId);
     if (!user) {
       throw new Error();
     }

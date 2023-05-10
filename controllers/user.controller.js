@@ -18,7 +18,7 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getUsers = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ["name", "role"]);
+  const filter = pick(req.query, ["username", "role"]);
   const page = parseInt(req.query.page) || 1;
   const pageSize = parseInt(req.query.pageSize) || 10;
   const result = await userService.queryUsers(filter, page, pageSize);

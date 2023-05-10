@@ -24,13 +24,14 @@ const createUser = async (userBody) => {
   const hash = await bcrypt.hash(password, saltRounds);
   // console.log(password + " " + hash + " " + email + " user service 24");
   // console.log(email + " " + password + " " + role + " user service 25");
-};
   return await User.create({
     email: email,
     password: hash,
     role: role,
  
   });
+};
+  
 
  
 
@@ -53,7 +54,7 @@ The page and pageSize parameters specify the current page and the number of reco
 The where option is used to filter the records based on the provided filter parameter.
 */
 const queryUsers = async (filter, page, pageSize) => {
-  const { rows, count } = await user.findAndCountAll({
+  const { rows, count } = await User.findAndCountAll({
     where: filter,
     limit: pageSize,
     offset: (page - 1) * pageSize,
