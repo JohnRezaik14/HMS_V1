@@ -3,14 +3,16 @@ const { User } = require("../models");
 const ApiError = require("../utils/ApiError");
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const saltRounds = 10;
+const saltRounds = 12;
+const sequelize = require("sequelize");
 /**
  * Create a user
  * @param {Object} userBody
  * @returns {Promise<User>}
  */
 const createUser = async (userBody) => {
-  let password = userBody.password;
+
+  const password = userBody.password;
   const role = userBody.role;
   const email = userBody.email;
   if (email == undefined) {
@@ -22,13 +24,14 @@ const createUser = async (userBody) => {
   const hash = await bcrypt.hash(password, saltRounds);
   // console.log(password + " " + hash + " " + email + " user service 24");
   // console.log(email + " " + password + " " + role + " user service 25");
-  
+};
   return await User.create({
     email: email,
     password: hash,
     role: role,
+ 
   });
-};
+
  
 
       
@@ -50,7 +53,7 @@ The page and pageSize parameters specify the current page and the number of reco
 The where option is used to filter the records based on the provided filter parameter.
 */
 const queryUsers = async (filter, page, pageSize) => {
-  const { rows, count } = await User.findAndCountAll({
+  const { rows, count } = await user.findAndCountAll({
     where: filter,
     limit: pageSize,
     offset: (page - 1) * pageSize,
@@ -68,6 +71,7 @@ const queryUsers = async (filter, page, pageSize) => {
  * @param {ObjectId} id
  * @returns {Promise<User>}
  */
+
 const getUserById = async (userId) => {
   const user = await User.findByPk(userId);
   return user;
@@ -79,8 +83,20 @@ const getUserById = async (userId) => {
  * @returns {Promise<User>}
  */
 const getUserByEmail = async (email) => {
-
   return User.findOne({
+    // attributes: [
+    //   [
+    //     sequelize.fn(
+    //       "max",
+    //       sequelize.col("userId", "email", "role", "password")
+    //     ),
+    //     "userId",
+    //     "email",
+    //     "role",
+    //     "password",
+    //   ],
+    // ],
+    raw: true,
     where: {
       email: email,
     }
@@ -92,6 +108,7 @@ const getUserByEmail = async (email) => {
  * @param {Object} updateBody
  * @returns {Promise<User>}
  */
+
 const updateUserById = async (userId, updateBody) => {
   const user = await getUserById(userId);
   if (!user) {
@@ -103,6 +120,7 @@ const updateUserById = async (userId, updateBody) => {
   if (
     updateBody.email &&
     (await User.findOne({
+     
       where: { email: updateBody.email, userId: { [Op.ne]: userId } },
     }))
   ) {
@@ -111,6 +129,7 @@ const updateUserById = async (userId, updateBody) => {
   Object.assign(user, updateBody);
   await user.save();
   return user;
+  
 };
 
 
@@ -119,6 +138,7 @@ const updateUserById = async (userId, updateBody) => {
  * @param {ObjectId} userId
  * @returns {Promise<User>}
  */
+
 const deleteUserById = async (userId) => {
   const user = await findByPk(userId);
   if (!user) {
@@ -127,6 +147,8 @@ const deleteUserById = async (userId) => {
   await user.destroy();
   return user;
 };
+
+
 const isPasswordMatch = async (email, password) => {
   const user = await getUserByEmail(email);
   const hash =  user.password;
@@ -141,7 +163,6 @@ const isPasswordMatch = async (email, password) => {
   // );
   return await bcrypt.compare(password, hash);
 };
-
 module.exports = {
   createUser,
   queryUsers,
@@ -150,4 +171,5 @@ module.exports = {
   updateUserById,
   deleteUserById,
   isPasswordMatch,
+  
 };

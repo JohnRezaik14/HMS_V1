@@ -22,5 +22,5 @@ const AuthToken = sequelize.define("AuthToken", {
     allowNull: false,
   },
 });
-// AuthToken.belongsTo(User, { foreignKey: "User_Id" });
+// AuthToken.belongsTo(User, { foreignKey: "userId" });
 module.exports = AuthToken;
