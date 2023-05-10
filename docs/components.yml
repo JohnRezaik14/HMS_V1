@@ -3,21 +3,21 @@ components:
     User:
       type: object
       properties:
-        User_Id:
+        userId:
           type: integer
-        Email:
+        email:
           type: string
-          format: Email
-        Username:
+          format: email
+        username:
           type: string
-        Role:
+        role:
           type: string
           enum: [user, admin]
       example:
-        User_Id: 1200560589898789975
-        Email: fake@example.com
-       Username: fake Username
-        Role: user
+        userId: 1200560589898789975
+        email: fake@example.com
+       username: fake username
+        role: user
 
     Token:
       type: object

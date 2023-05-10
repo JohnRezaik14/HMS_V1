@@ -14,14 +14,14 @@ const Token = sequelize.define("Token", {
     allowNull: false,
     unique: true,
     },
-    User_Id: {
+    userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: 'user',
-            key: 'User_Id',
+            key: 'userId',
       },
-        foreignKey: 'User_Id',
+        foreignKey: 'userId',
     },
   type: {
     type: DataTypes.ENUM,
@@ -44,7 +44,7 @@ const Token = sequelize.define("Token", {
 
 // create association with User model
 
-Token.belongsTo(User);
+// Token.belongsTo(User);
 
 // Add toJSON method to convert model instance to plain JSON object
 Token.prototype.toJSON = function () {

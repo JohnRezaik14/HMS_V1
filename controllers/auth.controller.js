@@ -6,8 +6,8 @@ const ApiError = require('../utils/ApiError');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
-  const fullUser = await User.findOne({ where: { Email: req.body.Email } });
-  const tokens = await tokenService.generateAuthTokens(fullUser);
+  // const fullUser = await User.findOne({ where: { email: req.body.email } });
+  const tokens = await tokenService.generateAuthTokens(user);
   res.status(httpStatus.CREATED).send({ user, tokens });
 });
 

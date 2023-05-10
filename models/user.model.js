@@ -24,7 +24,7 @@ const user = sequelize.define(
       trim: true,
     },
     password: {
-      type: Sequelize.STRING,
+      type: Sequelize.CHAR(255),
       allowNull: false,
       required: true,
       trim: true,
@@ -61,20 +61,20 @@ const user = sequelize.define(
     
   },
 
-  {
-    hooks: {
-      beforeCreate: async (user) => {
-        if (user.password) {
-          user.password = await bcrypt.hash(user.password, 8);
-        }
-      },
-      beforeUpdate: async (user) => {
-        if (user.password) {
-          user.password = await bcrypt.hash(user.password, 8);
-        }
-      },
-    },
-  },
+  // {
+  //   hooks: {
+  //     beforeCreate: async (user) => {
+  //       if (user.password) {
+  //         user.password = await bcrypt.hash(user.password, 8);
+  //       }
+  //     },
+  //     beforeUpdate: async (user) => {
+  //       if (user.password) {
+  //         user.password = await bcrypt.hash(user.password, 8);
+  //       }
+  //     },
+  //   },
+  // },
   {
     tableName: "user",
   },

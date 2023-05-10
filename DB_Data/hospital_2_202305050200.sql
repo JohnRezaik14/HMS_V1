@@ -151,7 +151,7 @@ USE hospital_2;
 --
 CREATE TABLE user (
   User_Id INT NOT NULL AUTO_INCREMENT,
-  Username VARCHAR(255) NOT NULL,
+  username VARCHAR(255) NOT NULL,
   Password VARCHAR(255) NOT NULL,
   Email VARCHAR(255) NOT NULL,
   Role VARCHAR(255) DEFAULT NULL,
@@ -168,7 +168,7 @@ COLLATE utf8mb4_0900_ai_ci;
 -- Create index `username` on table `user`
 --
 ALTER TABLE user 
-  ADD UNIQUE INDEX username(Username);
+  ADD UNIQUE INDEX username(username);
 
 --
 -- Create index `email` on table `user`

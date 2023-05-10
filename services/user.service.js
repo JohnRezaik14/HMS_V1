@@ -3,7 +3,7 @@ const { User } = require("../models");
 const ApiError = require("../utils/ApiError");
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const saltRounds = 10;
+const saltRounds = 12;
 const sequelize = require("sequelize");
 /**
  * Create a user
@@ -12,7 +12,7 @@ const sequelize = require("sequelize");
  */
 const createUser = async (userBody) => {
   let password = userBody.password;
-
+  const role = userBody.role;
   const email = userBody.email;
   if (email == undefined) {
     throw new ApiError(httpStatus.BAD_REQUEST, "email is undefined");
@@ -21,10 +21,13 @@ const createUser = async (userBody) => {
     throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");
   }
   const hash = await bcrypt.hash(password, saltRounds);
-
-  return User.create({
-    email: userBody.email,
+  console.log(password + " " + hash + " " + email + " user service 24");
+  // console.log(email + " " + password + " " + role + " user service 25");
+  
+  return await User.create({
+    email: email,
     password: hash,
+    role: role,
   });
 };
 
@@ -60,8 +63,8 @@ const queryUsers = async (filter, page, pageSize) => {
  * @param {ObjectId} id
  * @returns {Promise<User>}
  */
-const getUserById = async (User_Id) => {
-  const user = await User.findByPk(User_Id);
+const getUserById = async (userId) => {
+  const user = await User.findByPk(userId);
   return user;
 };
 
@@ -86,7 +89,7 @@ const getUserByEmail = async (email) => {
     // ],
     raw: true,
     where: {
-      Email: email,
+      email: email,
     },
   });
 };
@@ -96,8 +99,8 @@ const getUserByEmail = async (email) => {
  * @param {Object} updateBody
  * @returns {Promise<User>}
  */
-const updateUserById = async (User_Id, updateBody) => {
-  const user = await getUserById(User_Id);
+const updateUserById = async (userId, updateBody) => {
+  const user = await getUserById(userId);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
@@ -131,10 +134,18 @@ const deleteUserById = async (userId) => {
   return user;
 };
 
-const isPasswordMatch = async (email,password) => {
+const isPasswordMatch = async (email, password) => {
   const user = await getUserByEmail(email);
-  const hash = JSON.stringify(user.password);
-console.log(hash+" "+password+" "+"user service 137");
+  const hash =  user.password;
+
+  // console.log(user + " " + "user service 136");
+  // console.log(hash + " " + password + " " + "user service 137");
+  // console.log(
+  //   await bcrypt.compare(
+  //     "1234567B",
+  //     "$2a$10$HplwFSxEyymxo1hVeqFQR.zar4oyl7iqoiXxJ6Sl5xdZ9PHlfYy.C"
+  //   )
+  // );
   return await bcrypt.compare(password, hash);
 };
 module.exports = {

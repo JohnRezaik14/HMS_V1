@@ -103,7 +103,7 @@ app.listen(port, () => {
 
 //   return User.findOne({
 //     where: {
-//       Email: email,
+//       email: email,
 //     }
 //   });
 // };
@@ -139,8 +139,8 @@ app.listen(port, () => {
 // });
 
 // Patient.belongsTo(User, {
-//   foreignKey: "User_Id",
-//   targetKey: "User_Id",
+//   foreignKey: "userId",
+//   targetKey: "userId",
 //   constraints: true,
 //   onDelete: "cascade",
 //   onUpdate: "cascade",
@@ -151,9 +151,9 @@ app.listen(port, () => {
 // }).catch((err) => {
 //   console.log(err);
 // });
-// User.create({  "Username":"Badieh",
-//     "Email": "Badieh@gmail.com",
-//     "Password":"123456789"}).then((result) => {
+// User.create({  "username":"Badieh",
+//     "email": "Badieh@gmail.com",
+//     "password":"123456789"}).then((result) => {
 //   console.log(result);
 // }).catch((err) => {
 //   console.log(err);

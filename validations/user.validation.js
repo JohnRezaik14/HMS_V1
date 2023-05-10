@@ -12,13 +12,13 @@ const createUser = {
 
 const getUsers = {
   query: Joi.object().keys({
-    Username: Joi.string(),
-    Role: Joi.string(),
+    username: Joi.string(),
+    role: Joi.string(),
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
-    Email: Joi.string(),
-    User_ID: Joi.any(),
+    email: Joi.string(),
+    userId: Joi.any(),
   }),
 };
 
