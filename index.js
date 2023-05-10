@@ -32,6 +32,8 @@ app.use(helmet());
 app.use(xss());
 // *******************************************************************************************************************************
 
+// parse json request body
+app.use(express.json());
 
 // gzip compression
 app.use(compression());
@@ -55,13 +57,12 @@ app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
 
 
-// parse json request body
-app.use(express.json());
+
 
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true })); //x-www-form-urlencoded <form>
 
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 // v1 api routes
 app.use('/v1', routes);
@@ -92,7 +93,7 @@ app.listen(port, () => {
 
 
 
-const User = require("./models/user.model");
+// const User = require("./models/user.model");
 // const Patient = require("./models/patient.model");
 // const seq1 = require("./utils/DB");
 

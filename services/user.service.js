@@ -10,9 +10,9 @@ const saltRounds = 10;
  * @returns {Promise<User>}
  */
 const createUser = async (userBody) => {
-  let password = userBody.Password;
-  
-  const email = userBody.Email;
+  let password = userBody.password;
+  const role = userBody.role;
+  const email = userBody.email;
   if (email == undefined) {
     throw new ApiError(httpStatus.BAD_REQUEST, "email is undefined");
   }
@@ -20,16 +20,17 @@ const createUser = async (userBody) => {
     throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");
   }
   const hash = await bcrypt.hash(password, saltRounds);
+  // console.log(password + " " + hash + " " + email + " user service 24");
+  // console.log(email + " " + password + " " + role + " user service 25");
   
-    
-   
-     
-  return User.create({
-    Email: userBody.Email,
-    Password: hash,
+  return await User.create({
+    email: email,
+    password: hash,
+    role: role,
   });
+};
  
-}
+
       
     
   
@@ -67,9 +68,9 @@ const queryUsers = async (filter, page, pageSize) => {
  * @param {ObjectId} id
  * @returns {Promise<User>}
  */
-const getUserById = async (User_Id) => {
-  const User = await User.findByPk(User_Id);
-  return User;
+const getUserById = async (userId) => {
+  const user = await User.findByPk(userId);
+  return user;
 };
 
 /**
@@ -81,7 +82,7 @@ const getUserByEmail = async (email) => {
 
   return User.findOne({
     where: {
-      Email: email,
+      email: email,
     }
   });
 };
@@ -91,9 +92,9 @@ const getUserByEmail = async (email) => {
  * @param {Object} updateBody
  * @returns {Promise<User>}
  */
-const updateUserById = async (User_Id, updateBody) => {
-  const User = await getUserById(User_Id);
-  if (!User) {
+const updateUserById = async (userId, updateBody) => {
+  const user = await getUserById(userId);
+  if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
   //   if (updateBody.Email && (await User.isEmailTaken(updateBody.email, userId))) {
@@ -102,28 +103,43 @@ const updateUserById = async (User_Id, updateBody) => {
   if (
     updateBody.email &&
     (await User.findOne({
-      where: { Email: updateBody.Email, User_Id: { [Op.ne]: User_Id } },
+      where: { email: updateBody.email, userId: { [Op.ne]: userId } },
     }))
   ) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");
   }
-  Object.assign(User, updateBody);
-  await User.save();
-  return User;
+  Object.assign(user, updateBody);
+  await user.save();
+  return user;
 };
+
 
 /**
  * Delete user by id
  * @param {ObjectId} userId
  * @returns {Promise<User>}
  */
-const deleteUserById = async (User_Id) => {
-  const User = await findByPk(User_Id);
-  if (!User) {
+const deleteUserById = async (userId) => {
+  const user = await findByPk(userId);
+  if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
-  await User.destroy();
-  return User;
+  await user.destroy();
+  return user;
+};
+const isPasswordMatch = async (email, password) => {
+  const user = await getUserByEmail(email);
+  const hash =  user.password;
+
+  // console.log(user + " " + "user service 136");
+  // console.log(hash + " " + password + " " + "user service 137");
+  // console.log(
+  //   await bcrypt.compare(
+  //     "1234567B",
+  //     "$2a$10$HplwFSxEyymxo1hVeqFQR.zar4oyl7iqoiXxJ6Sl5xdZ9PHlfYy.C"
+  //   )
+  // );
+  return await bcrypt.compare(password, hash);
 };
 
 module.exports = {
@@ -133,4 +149,5 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  isPasswordMatch,
 };

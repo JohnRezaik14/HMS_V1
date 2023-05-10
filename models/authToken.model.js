@@ -13,9 +13,9 @@ const AuthToken = sequelize.define("AuthToken", {
     allowNull: false,
     references: {
       model: "User",
-      key: "User_Id",
+      key: "userId",
     },
-    foreignKey: "User_Id",
+    foreignKey: "userId",
   },
   expiresAt: {
     type: DataTypes.DATE,

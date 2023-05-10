@@ -7,7 +7,7 @@ const {Op}  = require("sequelize");
 const User = sequelize.define(
   "User",
   {
-    User_Id: {
+    userId: {
       type: Sequelize.INTEGER,
       required: true,
       allowNull: false,
@@ -15,14 +15,14 @@ const User = sequelize.define(
       autoIncrement: true,
       minvalue: 12,
     },
-    Username: {
+    username: {
       type: Sequelize.STRING,
       required: false,
       allowNull: true,
       unique: true,
       trim: true,
     },
-    Password: {
+    password: {
       type: Sequelize.STRING,
       allowNull: false,
       required: true,
@@ -40,7 +40,7 @@ const User = sequelize.define(
       // does not be included in the results returned by queries.
     },
 
-    Email: {
+    email: {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true,
@@ -52,7 +52,7 @@ const User = sequelize.define(
         }
       },
     },
-    Role: {
+    role: {
       type: Sequelize.STRING,
       enum: ["admin", "doctor", "patient"],
       default: "patient",
@@ -63,20 +63,20 @@ const User = sequelize.define(
     // },
   },
 
-  {
-    hooks: {
-      beforeCreate: async (user) => {
-        if (user.password) {
-          user.password = await bcrypt.hash(user.password, 8);
-        }
-      },
-      beforeUpdate: async (user) => {
-        if (user.password) {
-          user.password = await bcrypt.hash(user.password, 8);
-        }
-      },
-    },
-  },
+  // {
+  //   hooks: {
+  //     beforeCreate: async (user) => {
+  //       if (user.password) {
+  //         user.password = await bcrypt.hash(user.password, 8);
+  //       }
+  //     },
+  //     beforeUpdate: async (user) => {
+  //       if (user.password) {
+  //         user.password = await bcrypt.hash(user.password, 8);
+  //       }
+  //     },
+  //   },
+  // },
   {
     tableName: "user",
   },

@@ -3,9 +3,10 @@ const { password } = require('./custom.validation');
 
 const register = {
   body: Joi.object().keys({
-    Email: Joi.string().required().email(),
-    Password: Joi.string().required().custom(password),
+    email: Joi.string().required().email(),
+    password: Joi.string().required().custom(password),
     // Name: Joi.string().required(),
+    role: Joi.string().required(),
     
   }),
   
@@ -13,11 +14,10 @@ const register = {
 
 const login = {
   body: Joi.object().keys({
-    Email: Joi.string().required(),
-    Password: Joi.string().required(),
+    email: Joi.string().required(),
+    password: Joi.string().required(),
   }),
 };
-
 const logout = {
   body: Joi.object().keys({
     refreshToken: Joi.string().required(),
