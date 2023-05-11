@@ -1,9 +1,9 @@
 const sequelize = require("../utils/DB");
 const validator = require("validator");
 const Sequelize = require("sequelize");
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
 const { Op, Model } = require("sequelize");
-const { use } = require("passport");
+// const { use } = require("passport");
 
 const user = sequelize.define(
   "user",

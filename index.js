@@ -88,16 +88,31 @@ app.listen(port, () => {
 //   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 //   res.setHeader('Access-Control-Expose-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
 // });
-  
+
 // const Patient = require("./models/patient.model");
-const User = require("./models/user.model");
+// const User = require("./models/user.model");
 // const Doctor = require("./models/doctor.model");
+const patientAppt = require("./models/patientAppt.model");
+const { where } = require("sequelize");
 
 
 
 
 
-
+// patientAppt.update({
+//   "startTime": "14:20",
+//   "endTime":"14:55",
+//   "date":'2023-10-12',
+// "report": "report",
+//   "apptState": "cancele",
+//   "patientId": 21,
+//       "clinicssSkdId": 1,
+// },
+//   { where: { ApptId: 6 } }).then((result) => {
+//   console.log(result);
+// }).catch((err) => {
+//   console.log(err);
+// });
 
 
 
@@ -136,11 +151,6 @@ const User = require("./models/user.model");
 //   console.log(err);
 // });
 
-// doctor.sync().then((result) => {
-//   console.log(result);
-// }).catch((err) => {
-//   console.log(err);
-// });
 
 // // const user=require("/models/index.User")
 
@@ -170,13 +180,6 @@ const User = require("./models/user.model");
 // });
 // User.hasOne(Patient);
 // seq1.sync().then((result) => {
-//   console.log(result);
-// }).catch((err) => {
-//   console.log(err);
-// });
-// User.create({  "username":"Badieh",
-//     "email": "Badieh@gmail.com",
-//     "password":"123456789"}).then((result) => {
 //   console.log(result);
 // }).catch((err) => {
 //   console.log(err);

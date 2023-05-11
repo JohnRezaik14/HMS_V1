@@ -4,49 +4,221 @@ const sequelize = require("../utils/DB");
 
 const Patient = sequelize.define(
   "patient",
+  
   {
-    Patient_Id: {
+    patientId: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
       allowNull: false,
       primaryKey: true,
+      // `patientId` int NOT NULL AUTO_INCREMENT,
     },
-    First_Name: {
+    userId: {
+      // `userId` int NOT NULL,
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'user',
+        key: 'userId',
+      },
+      foreignKey: 'userId',
+    },
+    fullName: {
+      // `fullName` varchar(600) DEFAULT NULL COMMENT 'Composite attribute',
+      type: Sequelize.STRING,
+      defaultValue: null,
+    },
+    firstName: {
+      // `firstName` varchar(150) NOT NULL,
       type: Sequelize.STRING,
       allowNull: false,
     },
-    Second_Name: {
+    secondName: {
+      // `secondName` varchar(150) NOT NULL,
       type: Sequelize.STRING,
       allowNull: false,
     },
-    Third_Name: {
+    thirdName: {
+      // `thirdName` varchar(150) NOT NULL,
       type: Sequelize.STRING,
       allowNull: false,
     },
-    Last_Name: {
+    lastName: {
+      // `lastName` varchar(150) NOT NULL,
       type: Sequelize.STRING,
       allowNull: false,
     },
-    National_Id: {
-      type: Sequelize.BIGINT,
-        allowNull: false,
+    nationalId: {
+      // `nationalId` char(14) NOT NULL,
+      type: Sequelize.CHAR(14),
+      allowNull: false,
       minLength:14,
     },
-    Birth_Date: {
+    birthDate: {
+      // `birthDate` date NOT NULL,
       type: Sequelize.DATE,
       allowNull: false,
     },
-    Gender: {
+    gender: {
+      // `gender` int NOT NULL COMMENT '0 represent Males ,\\\\\\\\n1 represent Females',
       type: Sequelize.INTEGER,
       allowNull: false,
+      validate(value) {
+        if (value <0 || value>2) {
+          throw new Error(
+            "Gender value must be between 0 and 2"
+          );
+        }
+      },
     },
-    Nationality: {
+    nationality: {
+      // `nationality` int NOT NULL COMMENT 'Reference from a List of all Nationalities',
       type: Sequelize.STRING,
       allowNull: false,
     },
-    Phone_Number: {
+    phoneNumber: {
+      // `phoneNumber` varchar(50) NOT NULL,
       type: Sequelize.BIGINT,
       allowNull: false,
+    },
+    religion: {
+      // `religion` int DEFAULT NULL COMMENT 'o for Muslem ,\\\\\\\\\\\\\\\\n1 for Christian\\\\\\\\\\\\\\\\n2 for Jewish',
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+    },
+    maritalStatus: {
+      // `maritalStatus` int DEFAULT NULL COMMENT '0 for  Single ,\\\\\\\\\\\\\\\\n1 for Married \\\\\\\\\\\\\\\\n2 for Divorced \\\\\\\\\\\\\\\\n3 for WIdower',
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+      validate(value) {
+        if (value < 0 || value > 3) {
+          throw new Error(
+            "maritalStatus value must be between 0 and 3"
+            );
+          }
+        },
+      },
+      bloodType: {
+        // `bloodType` int DEFAULT NULL COMMENT '0 for  A+ ,\\\\\\\\n1 for A- ,\\\\\\\\n2 for B+ ,\\\\\\\\n3 for B- ,\\\\\\\\n4 for O+ ,\\\\\\\\n5 for O- ,\\\\\\\\n6 for AB+ ,\\\\\\\\n7 for AB- ,',
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+      validate(value) {
+        if (value < 0 || value > 7) {
+          throw new Error(
+            "bloodType value must be between 0 and 7"
+          );
+        }
+      }
+    },
+    age: {
+      // `age` int DEFAULT NULL,
+      type: Sequelize.INTEGER,
+      defaultValue: null,
+    },
+    address: {
+      // `address` varchar(255) DEFAULT ' ',
+      type: Sequelize.STRING,
+      defaultValue: " ",
+    },
+    country: {
+      // `country` varchar(50) NOT NULL,
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    state: {
+      // `state` varchar(50) NOT NULL,
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    city: {
+      // `city` varchar(50) NOT NULL,
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  street: {
+    // `street` varchar(50) NOT NULL,
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  buildingNumber: {
+    // `buildingNumber` varchar(10) NOT NULL,
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+    appartment: {
+      // `appartment` int NOT NULL,
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
+    birthPlace: {
+      // `birthPlace` varchar(150) DEFAULT NULL COMMENT 'Composite attribute',
+      type: Sequelize.STRING,
+      defaultValue: ' ',
+    },
+    birthCountry: {
+      // `birthCountry` varchar(50) DEFAULT NULL COMMENT 'Governate',
+      type: Sequelize.STRING,
+      defaultValue: ' ',
+    },
+    birthState: {
+      //   `birthState` varchar(50) DEFAULT NULL,
+      type: Sequelize.STRING,
+      defaultValue: ' ',
+    },
+    birthCity: {
+      //   `birthCity` varchar(50) DEFAULT NULL,
+      type: Sequelize.STRING,
+      defaultValue: ' ',
+    },
+    height: {
+      //   `height` decimal(5,2) DEFAULT NULL COMMENT 'Height in cm',
+      type: Sequelize.DECIMAL(5, 2),
+      defaultValue: null,
+    },
+    weight: {
+      //   `weight` decimal(5,2) DEFAULT NULL COMMENT 'Weight in Kg',
+      type: Sequelize.DECIMAL(5, 2),
+      defaultValue: null,
+    },
+    job: {
+      //   `job` varchar(50) DEFAULT NULL,
+      type: Sequelize.STRING,
+      defaultValue: null,
+    },
+    jobAddress: {
+      //   `jobAddress` varchar(150) DEFAULT ' ' COMMENT 'Composite attribute',
+      type: Sequelize.STRING,
+      defaultValue: ' ',
+    },
+    jobCountry: {
+      //   `jobCountry` varchar(50) DEFAULT' ',
+      type: Sequelize.STRING,
+      defaultValue: ' ',
+    },
+    jobState: {
+      //   `jobState` varchar(50) DEFAULT ' ',
+      type: Sequelize.STRING,
+      defaultValue: ' ',
+    },
+    jobCity: {
+      //   `jobCity` varchar(50) DEFAULT ' ',
+      type: Sequelize.STRING,
+      defaultValue: ' ',
+    },
+    note: {
+      //   `note` text,
+      type: Sequelize.TEXT,
+      defaultValue: null,
+    },
+    patientPP: {
+      //   `patientPP` varchar(255) DEFAULT NULL,
+      type: Sequelize.STRING,
+      defaultValue: null,
+    },
+    patientPPHash: {
+      //   `patientPPHash` varchar(45) DEFAULT NULL,
+      type: Sequelize.STRING,
+      defaultValue: null,
     },
   },
   {
@@ -54,43 +226,5 @@ const Patient = sequelize.define(
   }, {
     timestamps: false
   }
-);
-
-module.exports = Patient;
-// `patientId` int NOT NULL AUTO_INCREMENT,
-// `userId` int NOT NULL,
-// `nationalId` char(14) NOT NULL,
-// `fullName` varchar(600) DEFAULT NULL COMMENT 'Composite attribute',
-// `firstName` varchar(150) NOT NULL,
-// `secondName` varchar(150) NOT NULL,
-// `thirdName` varchar(150) NOT NULL,
-// `lastName` varchar(150) NOT NULL,
-// `birthDate` date NOT NULL,
-// `age` int DEFAULT NULL,
-// `religion` int DEFAULT NULL COMMENT 'o for Muslem ,\\\\\\\\\\\\\\\\n1 for Christian\\\\\\\\\\\\\\\\n2 for Jewish',
-// `gender` int NOT NULL COMMENT '0 represent Males ,\\\\\\\\n1 represent Females',
-// `maritalStatus` int DEFAULT NULL COMMENT '0 for  Single ,\\\\\\\\\\\\\\\\n1 for Married \\\\\\\\\\\\\\\\n2 for Divorced \\\\\\\\\\\\\\\\n3 for WIdower',
-// `nationality` int NOT NULL COMMENT 'Reference from a List of all Nationalities',
-// `bloodType` int DEFAULT NULL COMMENT '0 for  A+ ,\\\\\\\\n1 for A- ,\\\\\\\\n2 for B+ ,\\\\\\\\n3 for B- ,\\\\\\\\n4 for O+ ,\\\\\\\\n5 for O- ,\\\\\\\\n6 for AB+ ,\\\\\\\\n7 for AB- ,',
-// `address` varchar(255) DEFAULT ' ',
-// `country` varchar(50) DEFAULT NULL,
-// `state` varchar(50) DEFAULT NULL,
-// `city` varchar(50) DEFAULT NULL,
-// `street` varchar(50) DEFAULT NULL,
-// `buildingNumber` varchar(3) DEFAULT NULL,
-// `appartment` int DEFAULT NULL,
-// `birthPlace` varchar(150) DEFAULT NULL COMMENT 'Composite attribute',
-// `birthCountry` varchar(50) DEFAULT NULL COMMENT 'Governate',
-// `birthState` varchar(50) DEFAULT NULL,
-// `birthCity` varchar(50) DEFAULT NULL,
-// `Phone_Number` varchar(50) NOT NULL,
-// `Height` decimal(5,2) DEFAULT NULL COMMENT 'Height in cm',
-// `Weight` decimal(5,2) DEFAULT NULL COMMENT 'Weight in Kg',
-// `Job` varchar(50) DEFAULT NULL,
-// `Job_Address` varchar(150) DEFAULT NULL COMMENT 'Composite attribute',
-// `Job_Address_Governorate` varchar(50) DEFAULT NULL,
-// `Job_Address_District` varchar(50) DEFAULT NULL,
-// `Job_Address_Building_Number` varchar(50) DEFAULT NULL,
-// `Note` text,
-// `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-// `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  );
+  module.exports = Patient;
