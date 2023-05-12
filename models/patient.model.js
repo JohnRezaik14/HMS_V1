@@ -111,7 +111,7 @@ const Patient = sequelize.define(
     address: {
       // `address` varchar(255) DEFAULT ' ',
       type: Sequelize.STRING,
-      defaultValue: " ",
+      defaultValue: "  ",
     },
     country: {
       // `country` varchar(50) NOT NULL,
@@ -146,22 +146,22 @@ const Patient = sequelize.define(
     birthPlace: {
       // `birthPlace` varchar(150) DEFAULT NULL COMMENT 'Composite attribute',
       type: Sequelize.STRING,
-      defaultValue: " ",
+      defaultValue: "  ",
     },
     birthCountry: {
       // `birthCountry` varchar(50) DEFAULT NULL COMMENT 'Governate',
       type: Sequelize.STRING,
-      defaultValue: " ",
+      defaultValue: "  ",
     },
     birthState: {
       //   `birthState` varchar(50) DEFAULT NULL,
       type: Sequelize.STRING,
-      defaultValue: " ",
+      defaultValue: "  ",
     },
     birthCity: {
       //   `birthCity` varchar(50) DEFAULT NULL,
       type: Sequelize.STRING,
-      defaultValue: " ",
+      defaultValue: "  ",
     },
     height: {
       //   `height` decimal(5,2) DEFAULT NULL COMMENT 'Height in cm',
@@ -181,22 +181,22 @@ const Patient = sequelize.define(
     jobAddress: {
       //   `jobAddress` varchar(150) DEFAULT ' ' COMMENT 'Composite attribute',
       type: Sequelize.STRING,
-      defaultValue: " ",
+      defaultValue: "  ",
     },
     jobCountry: {
       //   `jobCountry` varchar(50) DEFAULT' ',
       type: Sequelize.STRING,
-      defaultValue: " ",
+      defaultValue: "  ",
     },
     jobState: {
       //   `jobState` varchar(50) DEFAULT ' ',
       type: Sequelize.STRING,
-      defaultValue: " ",
+      defaultValue: "  ",
     },
     jobCity: {
       //   `jobCity` varchar(50) DEFAULT ' ',
       type: Sequelize.STRING,
-      defaultValue: " ",
+      defaultValue: "  ",
     },
     note: {
       //   `note` text,
