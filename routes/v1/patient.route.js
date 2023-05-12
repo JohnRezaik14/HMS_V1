@@ -8,13 +8,13 @@ const router = express.Router();
 
 router
     .route('/')
-    .post( validate(patientValidation.createPatient), patientController.createPatient)
+    // .post( validate(patientValidation.createPatient), patientController.createPatient)
     // .get( validate(patientValidation.getPatients), patientController.getPatients);
 
 router
     .route('/:patientId')
-    .get( validate(patientValidation.getPatient), patientController.getPatient)
-    .patch( validate(patientValidation.updatePatient), patientController.updatePatient)
+    // .get( validate(patientValidation.getPatient), patientController.getPatient)
+    // .patch( validate(patientValidation.updatePatient), patientController.updatePatient)
     // .delete( validate(patientValidation.deletePatient), patientController.deletePatient);
 
 module.exports = router;
