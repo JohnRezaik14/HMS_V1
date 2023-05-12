@@ -5,7 +5,7 @@ const doctorService = require("../services/doctor.service");
 const getDoctors = catchAsync(async (req, res) => {
     
     const result = await doctorService.queryDoctors();
-    res.status(httpStatus.OK).json(result);
+    res.status(httpStatus.OK).send(result);
 });
 module.exports = {
     getDoctors,

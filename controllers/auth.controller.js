@@ -18,7 +18,13 @@ const login = catchAsync(async (req, res) => {
   } else {
     console.log(email+" "+password+(typeof password)+" "+"auth.controller.js.19");
   }
-  const user = await authService.loginUserWithEmailAndPassword(email, password);
+  const fullUser = await authService.loginUserWithEmailAndPassword(email, password);
+ const user = {
+    userId: fullUser.userId,
+    email: fullUser.email,
+    username: fullUser.username,
+    role: fullUser.role,
+  }
   const tokens = await tokenService.generateAuthTokens(user);
   res.send({ user, tokens });
 });
