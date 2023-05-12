@@ -237,4 +237,7 @@ Patient.isNationalIdTaken = async (nationalId) => {
 //     return true;
 //   }
 // };
+
+// need to blur hash the image
+
 module.exports = Patient;
