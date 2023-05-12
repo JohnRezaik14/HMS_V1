@@ -221,7 +221,7 @@ const Patient = sequelize.define(
     timestamps: false,
   }
 );
-isNationalIdTaken = async (nationalId) => {
+Patient.isNationalIdTaken = async (nationalId) => {
   const patient = await Patient.findOne({
     where: { nationalId: nationalId },
   });
@@ -229,12 +229,12 @@ isNationalIdTaken = async (nationalId) => {
     return true;
   }
 };
-isUserTaken = async (userId) => {
-  const user = await User.findOne({
-    where: { [Op.and]: [{ userId: userId }, { role: "patient" }] },
-  });
-  if (user) {
-    return true;
-  }
-};
+// Patient.isUserIdTaken = async (userId) => {
+//   const user = await User.findOne({
+//     where: { [Op.and]: [{ userId: userId }, { role: "patient" }] },
+//   });
+//   if (user) {
+//     return true;
+//   }
+// };
 module.exports = Patient;
