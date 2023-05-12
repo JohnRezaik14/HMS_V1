@@ -111,4 +111,31 @@ if (jobAddress == undefined || null) {
     });
 }
  
-  
+
+const getPatientByUserId = async (userId) => {
+    const patient = await Patient.findOne({ where: { userId: userId } });
+    return patient;
+};
+
+const updatePatientById = async (userId, updateBody) => {
+    const user = await getUserById(userId);
+    if (!user) {
+      throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    }
+    //   if (updateBody.Email && (await User.isEmailTaken(updateBody.email, userId))) {
+    //     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
+    //     }
+    if (
+      updateBody.email &&
+      (await User.findOne({
+       
+        where: { email: updateBody.email, userId: { [Op.ne]: userId } },
+      }))
+    ) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");
+    }
+    Object.assign(user, updateBody);
+    await user.save();
+    return user;
+    
+  };

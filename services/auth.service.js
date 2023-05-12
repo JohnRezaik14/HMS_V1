@@ -33,7 +33,8 @@ const logout = async (refreshToken) => {
   if (!refreshTokenDoc) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
   }
-  await refreshTokenDoc.destroy();
+  await Token.destroy({ where: { token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false }, });
+  // await refreshTokenDoc.destroy();
   
 };
 
@@ -50,9 +51,10 @@ const refreshAuth = async (refreshToken) => {
     const user = await userService.getUserById(refreshTokenDoc.userId);
     // console.log(JSON.stringify(user)+" "+"auth.service.js.51");
     if (!user) {
-      throw new Error();
+      throw new ApiError(httpStatus.NOT_FOUND, 'user not found');
     }
-    await refreshTokenDoc.destroy();
+    await Token.destroy({ where: { token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false }, });
+    // await refreshTokenDoc.destroy();
     return tokenService.generateAuthTokens(user);
   } catch (error) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
