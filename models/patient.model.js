@@ -1,10 +1,9 @@
-const Sequelize = require("sequelize");
-
+const User = require("./user.model");
 const sequelize = require("../utils/DB");
-
+const { Op, Sequelize } = require("sequelize");
 const Patient = sequelize.define(
   "patient",
-  
+
   {
     patientId: {
       type: Sequelize.INTEGER,
@@ -18,10 +17,10 @@ const Patient = sequelize.define(
       type: Sequelize.INTEGER,
       allowNull: false,
       references: {
-        model: 'user',
-        key: 'userId',
+        model: "user",
+        key: "userId",
       },
-      foreignKey: 'userId',
+      foreignKey: "userId",
     },
     fullName: {
       // `fullName` varchar(600) DEFAULT NULL COMMENT 'Composite attribute',
@@ -52,7 +51,7 @@ const Patient = sequelize.define(
       // `nationalId` char(14) NOT NULL,
       type: Sequelize.CHAR(14),
       allowNull: false,
-      minLength:14,
+      minLength: 14,
     },
     birthDate: {
       // `birthDate` date NOT NULL,
@@ -64,10 +63,8 @@ const Patient = sequelize.define(
       type: Sequelize.INTEGER,
       allowNull: false,
       validate(value) {
-        if (value <0 || value>2) {
-          throw new Error(
-            "Gender value must be between 0 and 2"
-          );
+        if (value < 0 || value > 2) {
+          throw new Error("Gender value must be between 0 and 2");
         }
       },
     },
@@ -92,23 +89,19 @@ const Patient = sequelize.define(
       defaultValue: 0,
       validate(value) {
         if (value < 0 || value > 3) {
-          throw new Error(
-            "maritalStatus value must be between 0 and 3"
-            );
-          }
-        },
+          throw new Error("maritalStatus value must be between 0 and 3");
+        }
       },
-      bloodType: {
-        // `bloodType` int DEFAULT NULL COMMENT '0 for  A+ ,\\\\\\\\n1 for A- ,\\\\\\\\n2 for B+ ,\\\\\\\\n3 for B- ,\\\\\\\\n4 for O+ ,\\\\\\\\n5 for O- ,\\\\\\\\n6 for AB+ ,\\\\\\\\n7 for AB- ,',
+    },
+    bloodType: {
+      // `bloodType` int DEFAULT NULL COMMENT '0 for  A+ ,\\\\\\\\n1 for A- ,\\\\\\\\n2 for B+ ,\\\\\\\\n3 for B- ,\\\\\\\\n4 for O+ ,\\\\\\\\n5 for O- ,\\\\\\\\n6 for AB+ ,\\\\\\\\n7 for AB- ,',
       type: Sequelize.INTEGER,
       defaultValue: 0,
       validate(value) {
         if (value < 0 || value > 7) {
-          throw new Error(
-            "bloodType value must be between 0 and 7"
-          );
+          throw new Error("bloodType value must be between 0 and 7");
         }
-      }
+      },
     },
     age: {
       // `age` int DEFAULT NULL,
@@ -132,19 +125,19 @@ const Patient = sequelize.define(
     },
     city: {
       // `city` varchar(50) NOT NULL,
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  street: {
-    // `street` varchar(50) NOT NULL,
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  buildingNumber: {
-    // `buildingNumber` varchar(10) NOT NULL,
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    street: {
+      // `street` varchar(50) NOT NULL,
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    buildingNumber: {
+      // `buildingNumber` varchar(10) NOT NULL,
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
     appartment: {
       // `appartment` int NOT NULL,
       type: Sequelize.INTEGER,
@@ -153,22 +146,22 @@ const Patient = sequelize.define(
     birthPlace: {
       // `birthPlace` varchar(150) DEFAULT NULL COMMENT 'Composite attribute',
       type: Sequelize.STRING,
-      defaultValue: ' ',
+      defaultValue: " ",
     },
     birthCountry: {
       // `birthCountry` varchar(50) DEFAULT NULL COMMENT 'Governate',
       type: Sequelize.STRING,
-      defaultValue: ' ',
+      defaultValue: " ",
     },
     birthState: {
       //   `birthState` varchar(50) DEFAULT NULL,
       type: Sequelize.STRING,
-      defaultValue: ' ',
+      defaultValue: " ",
     },
     birthCity: {
       //   `birthCity` varchar(50) DEFAULT NULL,
       type: Sequelize.STRING,
-      defaultValue: ' ',
+      defaultValue: " ",
     },
     height: {
       //   `height` decimal(5,2) DEFAULT NULL COMMENT 'Height in cm',
@@ -188,22 +181,22 @@ const Patient = sequelize.define(
     jobAddress: {
       //   `jobAddress` varchar(150) DEFAULT ' ' COMMENT 'Composite attribute',
       type: Sequelize.STRING,
-      defaultValue: ' ',
+      defaultValue: " ",
     },
     jobCountry: {
       //   `jobCountry` varchar(50) DEFAULT' ',
       type: Sequelize.STRING,
-      defaultValue: ' ',
+      defaultValue: " ",
     },
     jobState: {
       //   `jobState` varchar(50) DEFAULT ' ',
       type: Sequelize.STRING,
-      defaultValue: ' ',
+      defaultValue: " ",
     },
     jobCity: {
       //   `jobCity` varchar(50) DEFAULT ' ',
       type: Sequelize.STRING,
-      defaultValue: ' ',
+      defaultValue: " ",
     },
     note: {
       //   `note` text,
@@ -223,8 +216,25 @@ const Patient = sequelize.define(
   },
   {
     tableName: "patient",
-  }, {
-    timestamps: false
+  },
+  {
+    timestamps: false,
   }
-  );
-  module.exports = Patient;
+);
+isNationalIdTaken = async (nationalId) => {
+  const patient = await Patient.findOne({
+    where: { nationalId: nationalId },
+  });
+  if (patient) {
+    return true;
+  }
+};
+isUserTaken = async (userId) => {
+  const user = await User.findOne({
+    where: { [Op.and]: [{ userId: userId }, { role: "patient" }] },
+  });
+  if (user) {
+    return true;
+  }
+};
+module.exports = Patient;
