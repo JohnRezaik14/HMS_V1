@@ -11,7 +11,7 @@ const doctor = sequelize.define(
     },
     
     nationalId: {
-        type: Sequelize.CHAR(15),
+        type: Sequelize.CHAR(14),
         allowNull: true,
         trim: true,
         minlength: 14,
