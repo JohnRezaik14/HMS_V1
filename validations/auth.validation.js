@@ -1,19 +1,30 @@
-const Joi = require('joi');
-const { password } = require('./custom.validation');
+const Joi = require("joi");
+const { password } = require("./custom.validation");
 const register = {
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().custom(password),
-    // Name: Joi.string().required(),
-    role: Joi.string().required(),
-    
+    email: Joi.string().required().email().messages({
+      "string.email": "Email must be a valid email",
+    }),
+    password: Joi.string().required().custom(password).messages({
+      "string.pattern.base":
+        "Password must have at least one number and one character",
+    }),
+    username: Joi.string(),
+    role: Joi.string().required().messages({
+      "string.pattern.base":
+        "Username must be either admin, doctor or patient",
+    }).valid("admin", "doctor", "patient"),
   }),
-  
 };
 const login = {
   body: Joi.object().keys({
-    email: Joi.string().required(),
-    password: Joi.string().required(),
+    email: Joi.string().required().messages({
+      "string.email": "Email must be a valid email",
+    }),
+    password: Joi.string().required().messages({
+      "string.pattern.base":
+        "Password must have at least one number and one character",
+    }),
   }),
 };
 const logout = {

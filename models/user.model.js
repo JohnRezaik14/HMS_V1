@@ -4,11 +4,11 @@ const Sequelize = require("sequelize");
 // const bcrypt = require("bcryptjs");
 const { Op, Model } = require("sequelize");
 // const { use } = require("passport");
-
+const ApiError = require("../utils/ApiError");
+const httpStatus = require("http-status");
 const user = sequelize.define(
   "user",
   {
-   
     userId: {
       type: Sequelize.INTEGER,
       required: true,
@@ -17,7 +17,7 @@ const user = sequelize.define(
       autoIncrement: true,
       minvalue: 12,
     },
-    
+
     username: {
       type: Sequelize.STRING,
       required: false,
@@ -52,17 +52,16 @@ const user = sequelize.define(
         }
       },
     },
-   
+
     role: {
       type: Sequelize.STRING,
       enum: ["admin", "doctor", "patient"],
       default: "patient",
     },
-    
   },
 
   // {
-  //  
+  //
   // {
   //   hooks: {
   //     beforeCreate: async (user) => {
@@ -86,28 +85,30 @@ const user = sequelize.define(
   {
     timestamps: true,
   },
-  console.log("User table created successfully")
+  // console.log("User table created successfully")
 );
 
 user.isEmailTaken = async function (email, excludeUserId) {
   // isEmailTaken is a static method that can be called directly from the model
   // isEmailTaken is a custom class method added to a Sequelize model.
   const user = await this.findOne({
-    where: { email, userId: { [Op.ne]: excludeUserId } },
+    where: { email: { [Op.eq]: email } },
   });
-  return !!user;
+  if (user) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Email is already taken");
+  }
+  return user;
 };
-console.log("passed isEmailTaken in user.model.js");
+// console.log("passed isEmailTaken in user.model.js");
 
 // user.isPasswordMatch = async (email, password) => {
-  
+
 //   const user = this;
 //   console.log(user + " " + password + " " + "user.model.js.101");
 //   console.log(JSON.stringify(email) + " " + JSON.stringify(password));
 //   // console.log("passed isPasswordMatch in user.model.js");
 //   return bcrypt.compare(password, user.password);
 // };
-
 
 user.prototype.toJSON = function () {
   const values = Object.assign({}, this.get());
