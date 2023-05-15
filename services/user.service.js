@@ -16,10 +16,10 @@ const createUser = async (userBody) => {
   const role = userBody.role;
   const email = userBody.email;
   if (email == undefined) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "email is undefined");
+    throw new ApiError(httpStatus.BAD_REQUEST, "Email is undefined");
   }
   if (await User.isEmailTaken(email)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");
+    throw new ApiError(httpStatus.BAD_REQUEST, "Email is already taken");
   }
   const hash = await bcrypt.hash(password, saltRounds);
   // console.log(password + " " + hash + " " + email + " user service 24");
@@ -28,7 +28,6 @@ const createUser = async (userBody) => {
     email: email,
     password: hash,
     role: role,
- 
   });
 };
   
@@ -53,6 +52,7 @@ const createUser = async (userBody) => {
 The page and pageSize parameters specify the current page and the number of records to return per page.
 The where option is used to filter the records based on the provided filter parameter.
 */
+
 const queryUsers = async (filter, page, pageSize) => {
   const { rows, count } = await User.findAndCountAll({
     where: filter,

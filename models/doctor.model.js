@@ -107,6 +107,6 @@ const doctor = sequelize.define(
   {
     timestamps: true,
     },
-  console.log("doctor table  success")
+//   console.log("doctor table  success")
 );
 module.exports = doctor;

@@ -7,7 +7,7 @@ const patientService = require("../services/patient.service");
 const createPatient = catchAsync(async (req, res) => {
   const patient = await patientService.createPatient(req.body);
   const savedPatient = await patientService.getPatientByUserId(patient.userId);
-  res.status(httpStatus.CREATED).send(savedPatient);
+  res.status(httpStatus.CREATED).send({ savedPatient, httpStatus: 201, message: "Patient account created successfully" });
 });
 
 const getPatient = catchAsync(async (req, res) => {
@@ -23,7 +23,7 @@ const updatePatient = catchAsync(async (req, res) => {
     req.params.userId,
     req.body
   );
-  res.send(patient);
+  res.send({ patient, httpStatus: 200, message: "Patient updated successfully" });
 });
 module.exports = {
   createPatient,
