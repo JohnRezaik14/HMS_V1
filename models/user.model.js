@@ -5,7 +5,7 @@ const Sequelize = require("sequelize");
 const { Op, Model } = require("sequelize");
 // const { use } = require("passport");
 const ApiError = require("../utils/ApiError");
-const httpStatus = require("http-status");
+const statusCode = require("http-status");
 const user = sequelize.define(
   "user",
   {
@@ -95,7 +95,7 @@ user.isEmailTaken = async function (email, excludeUserId) {
     where: { email: { [Op.eq]: email } },
   });
   if (user) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Email is already taken");
+    throw new ApiError(statusCode.BAD_REQUEST, "Email is already taken");
   }
   return user;
 };

@@ -1,7 +1,7 @@
 const joi = require("joi");
 const getPatient = {
-  params: joi.object().keys({
-    userId: joi.string().required(),
+  body: joi.object().keys({
+    userId: joi.number().required(),
   }),
 };
 const createPatient = {
@@ -48,10 +48,9 @@ const createPatient = {
 };
 
 const updatePatient = {
-  params: joi.object().keys({
-    userId: joi.number().required(),
-  }),
+ 
   body: joi.object().keys({
+    userId: joi.number().required(),
     nationalId: joi.string().length(14),
     fullName: joi.string().max(600).allow(null),
     firstName: joi.string(),

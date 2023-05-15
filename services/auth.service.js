@@ -1,4 +1,4 @@
-const httpStatus = require('http-status');
+const statusCode = require('http-status');
 const tokenService = require('./token.service');
 const userService = require('./user.service');
 const Token = require('../models/token.model');
@@ -17,7 +17,7 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   const user = await userService.getUserByEmail(email);
   console.log(JSON.stringify(user)+" "+"auth.service.js.17");
   if (!user || !(await userService.isPasswordMatch(email,password))) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+    throw new ApiError(statusCode.UNAUTHORIZED, 'Incorrect email or password');
   }
   return user;
 };
@@ -28,10 +28,10 @@ const loginUserWithEmailAndPassword = async (email, password) => {
  * @returns {Promise}
  */
 const logout = async (refreshToken) => {
-  const refreshTokenDoc = await Token.findOne({ Where: { token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false }, });
+  const refreshTokenDoc = await Token.findOne({ Where: { token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false } });
   console.log(JSON.stringify(refreshTokenDoc)+" "+"auth.service.js.31");
   if (!refreshTokenDoc) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'RefreashToken Not found');
+    throw new ApiError(statusCode.NOT_FOUND, 'RefreashToken Not found');
   }
   await Token.destroy({ where: { token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false }, });
   // await refreshTokenDoc.destroy();
@@ -51,13 +51,13 @@ const refreshAuth = async (refreshToken) => {
     const user = await userService.getUserById(refreshTokenDoc.userId);
     // console.log(JSON.stringify(user)+" "+"auth.service.js.51");
     if (!user) {
-      throw new ApiError(httpStatus.NOT_FOUND, 'user not found');
+      throw new ApiError(statusCode.NOT_FOUND, 'user not found');
     }
     await Token.destroy({ where: { token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false }, });
     // await refreshTokenDoc.destroy();
     return tokenService.generateAuthTokens(user);
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
+    throw new ApiError(statusCode.UNAUTHORIZED, 'Please authenticate');
   }
 };
 
@@ -77,7 +77,7 @@ const refreshAuth = async (refreshToken) => {
 //     await userService.updateUserById(user.userId, { password: newPassword });
 //     await Token.deleteMany({ user: user.userId, type: tokenTypes.RESET_PASSWORD });
 //   } catch (error) {
-//     throw new ApiError(httpStatus.UNAUTHORIZED, 'Password reset failed');
+//     throw new ApiError(statusCode.UNAUTHORIZED, 'Password reset failed');
 //   }
 // };
 
@@ -96,7 +96,7 @@ const refreshAuth = async (refreshToken) => {
 //     await Token.deleteMany({ user: user.userId, type: tokenTypes.VERIFY_EMAIL });
 //     await userService.updateUserById(user.userId, { isEmailVerified: true });
 //   } catch (error) {
-//     throw new ApiError(httpStatus.UNAUTHORIZED, 'Email verification failed');
+//     throw new ApiError(statusCode.UNAUTHORIZED, 'Email verification failed');
 //   }
 // };
 

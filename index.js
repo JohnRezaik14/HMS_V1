@@ -7,7 +7,7 @@ const morgan = require('./config/morgan');
 const compression = require('compression');
 const cors = require('cors');
 const passport = require('passport');
-const httpStatus = require('http-status');
+const statusCode = require('http-status');
 const path = require("path");
 const { jwtStrategy } = require('./config/passport');
 const routes = require('./routes/v1');
@@ -62,10 +62,27 @@ app.use(express.urlencoded({ extended: true })); //x-www-form-urlencoded <form>
 
 // v1 api routes
 app.use('/v1', routes);
+app.use((err, req, res, next) => {
+  if (err instanceof ApiError) {
+    res.status(err.statusCode).json({
+      statusCode: err.statusCode, // Change "code" to "statusCode"
+      message: err.message,
+      isOperational: err.isOperational,
+      stack: err.stack,
+    });
+  } else {
+    // Handle other types of errors or fallback to a generic error response
+    res.status(500).json({
+      statusCode: 500,
+      message: "Internal Server Error",
+      isOperational: false,
 
+    });
+  }
+});
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
-  next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
+  next(new ApiError(statusCode.NOT_FOUND, 'Not found'));
 });
 
 // convert error to ApiError, if needed
@@ -92,8 +109,8 @@ app.listen(port, () => {
 // const Patient = require("./models/patient.model");
 // const User = require("./models/user.model");
 // const Doctor = require("./models/doctor.model");
-const patientAppt = require("./models/patientAppt.model");
-const { where } = require("sequelize");
+// const patientAppt = require("./models/patientAppt.model");
+// const { where } = require("sequelize");
 
 
 
