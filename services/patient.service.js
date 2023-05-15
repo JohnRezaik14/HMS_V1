@@ -1,4 +1,4 @@
-const httpStatus = require("http-status");
+const statusCode = require("http-status");
 const { User, Patient } = require("../models");
 const { Op } = require("sequelize");
 const ApiError = require("../utils/ApiError");
@@ -8,31 +8,30 @@ const createPatient = async (patientBody) => {
   const userId = patientBody.userId; // `userId` int NOT NULL,
   const user = await userService.getUserById(userId);
   if ((await userId) == undefined || null) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "userId must have value");
-  } else if (await Patient.findOne({
-    where: { userId: userId  }
-  })) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "userId already is taken");
+    throw new ApiError(statusCode.BAD_REQUEST, "userId must have value");
+  } else if (
+    await Patient.findOne({
+      where: { userId: userId },
+    })
+  ) {
+    throw new ApiError(statusCode.BAD_REQUEST, "userId already is taken");
   } else if (!user) {
     throw new ApiError(
-      httpStatus.BAD_REQUEST,
+      statusCode.BAD_REQUEST,
       "User doesn't exist , you must create user first"
     );
   } else if (user.role != "patient") {
-      throw new ApiError(
-          httpStatus.BAD_REQUEST,
-          "User role must be patient"
-      );
-    }
+    throw new ApiError(statusCode.BAD_REQUEST, "User role must be patient");
+  }
 
   const nationalId = patientBody.nationalId; // `nationalId` char(14) NOT NULL,
   if (await Patient.isNationalIdTaken(nationalId)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "nationalId already taken");
+    throw new ApiError(statusCode.BAD_REQUEST, "nationalId already taken");
   }
 
   const phoneNumber = patientBody.phoneNumber; // `phoneNumber` varchar(50) NOT NULL
 
-  const fullName = patientBody.fullName; // `fullName` varchar(600) DEFAULT NULL
+  let fullName = patientBody.fullName; // `fullName` varchar(600) DEFAULT NULL
   if ((await fullName) == null || undefined) {
     fullName = " ";
   }
@@ -50,7 +49,7 @@ const createPatient = async (patientBody) => {
   const maritalStatus = patientBody.maritalStatus; // `maritalStatus` int DEFAULT NULL
   const bloodType = patientBody.bloodType; // `bloodType` int DEFAULT NULL
 
-  const address = patientBody.address; // `address` varchar(255) DEFAULT ' '
+  let address = patientBody.address; // `address` varchar(255) DEFAULT ' '
   if (address == undefined || null) {
     address = " ";
   }
@@ -61,7 +60,7 @@ const createPatient = async (patientBody) => {
   const buildingNumber = patientBody.buildingNumber; // `buildingNumber` varchar(10) NOT NULL DEFAULT ' '
   const appartment = patientBody.appartment; // `appartment` int NOT NULL DEFAULT '1'
 
-  const birthPlace = patientBody.birthPlace; // `birthPlace` varchar(150) DEFAULT ' '
+  let birthPlace = patientBody.birthPlace; // `birthPlace` varchar(150) DEFAULT ' '
   if (birthPlace == undefined || null) {
     birthPlace = " ";
   }
@@ -72,7 +71,7 @@ const createPatient = async (patientBody) => {
   const height = patientBody.height; // `height` decimal(5,2) DEFAULT NULL
   const weight = patientBody.weight; // `weight` decimal(5,2) DEFAULT NULL
   const job = patientBody.job; // `job` varchar(50) DEFAULT NULL
-  const jobAddress = patientBody.jobAddress; // `jobAddress` varchar(150) DEFAULT ' '
+  let jobAddress = patientBody.jobAddress; // `jobAddress` varchar(150) DEFAULT ' '
   if (jobAddress == undefined || null) {
     jobAddress = " ";
   }
@@ -130,7 +129,7 @@ const getPatientByUserId = async (userId) => {
 const updatePatientByUserId = async (userId, updateBody) => {
   const patient = await getPatientByUserId(userId);
   if (!patient) {
-    throw new ApiError(httpStatus.NOT_FOUND, "patient not found");
+    throw new ApiError(statusCode.NOT_FOUND, "patient not found");
   }
   Object.assign(patient, updateBody);
   await patient.save();

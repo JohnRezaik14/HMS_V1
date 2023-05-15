@@ -1,4 +1,4 @@
-const httpStatus = require("http-status");
+const statusCode = require("http-status");
 const { Doctor } = require("../models");
 const ApiError = require("../utils/ApiError");
 const express = require("express");
