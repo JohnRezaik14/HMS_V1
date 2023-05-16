@@ -95,6 +95,11 @@ app.listen(port, () => {
 // const Doctor = require("./models/doctor.model");
 // const patientAppt = require("./models/patientAppt.model");
 // const { where } = require("sequelize");
+// const clinicsSkd = require("./models/clinicsSkd.model");
+// clinicsSkd.findAll().then((result) => {
+//   console.log(result);
+// });
+
 
 // patientAppt.update({
 //   "startTime": "14:20",

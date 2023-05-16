@@ -1,7 +1,7 @@
 const { DataTypes ,Op} = require("sequelize");
 const sequelize = require("../utils/DB");
 const doctor = require("./doctor.model");
-const clinicsSkd = sequelize.define("Token", {
+const clinicsSkd = sequelize.define("clinics_skd", {
     skdId: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -42,6 +42,11 @@ const clinicsSkd = sequelize.define("Token", {
     type: DataTypes.TEXT,
    allowNull: true,
   },
-});
+  
+},
+{
+  timestamps: true,
+},
+);
 
 module.exports = clinicsSkd;
