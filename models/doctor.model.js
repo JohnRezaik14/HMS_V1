@@ -10,7 +10,16 @@ const doctor = sequelize.define(
       autoIncrement: true,
       allowNull: false,
     },
-
+    userId: {
+      // `userId` int NOT NULL,
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      references: {
+        model: "user",
+        key: "userId",
+      },
+      foreignKey: "userId",
+    },
     nationalId: {
       type: Sequelize.CHAR(14),
       allowNull: true,

@@ -3,7 +3,7 @@ const validator = require("validator");
 const sequelize = require("../utils/DB");
 
 const patientAppt = sequelize.define(
-  "patient_Appt",
+  "patient_appt",
   {
     apptId: {
       type: Sequelize.INTEGER,
