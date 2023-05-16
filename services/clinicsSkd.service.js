@@ -6,7 +6,7 @@ const userService = require("./user.service");
 const doctorService = require("./doctor.service");
 
 const createClinicsSkd = async (clinicsSkdBody) => {
-  const doctorId = await clinicsSkdBody.doctorId; 
+  const doctorId = await clinicsSkdBody.doctorId;
   const doctor = await userService.getDoctorById(doctorId);
   if ((await doctorId) == undefined || null) {
     throw new ApiError(statusCode.NOT_FOUND, "Doctor Id not valid");
@@ -23,7 +23,7 @@ const createClinicsSkd = async (clinicsSkdBody) => {
   return await ClinicsSkd.create({
     skdId: skdId,
     startTime: startTime,
-      endTime: endTime,
+    endTime: endTime,
     doctorId: doctorId,
     dayOfWeek: day,
     isAvaiLable: isAvaiLable,
@@ -31,27 +31,27 @@ const createClinicsSkd = async (clinicsSkdBody) => {
   });
 };
 
-const queryClinicsSkdByDoctorId = async (doctorId) => {
-    const DoctorId = doctorId; 
-    const doctor = await userService.getDoctorById(DoctorId);
-    
-    if ((await doctorId) == undefined || null) {
-        throw new ApiError(statusCode.NOT_FOUND, "Doctor Id not valid");
-    }
-    if (!(await doctor)) {
-        throw new ApiError(statusCode.NOT_FOUND, "Doctor not found");
-    }
-    return await ClinicsSkd.findAll({
-        where: {
-            doctorId: doctorId,
-        },
-    });
+const getClinicsSkdByDoctorId = async (doctorId) => {
+  const DoctorId = doctorId;
+  const doctor = await doctorService.getDoctorById(DoctorId);
+
+  if ((await doctorId) == undefined || null) {
+    throw new ApiError(statusCode.NOT_FOUND, "Doctor Id not valid");
+  }
+  if (!(await doctor)) {
+    throw new ApiError(statusCode.NOT_FOUND, "Doctor not found");
+  }
+  return await ClinicsSkd.findAll({
+    where: {
+      doctorId: doctorId,
+    },
+  });
 };
-const getClinicsSkdById = async (clinicsSkdId) => {
-    return await ClinicsSkd.findByPk(clinicsSkdId);
+const getClinicsSkdBySkdId = async (clinicsSkdId) => {
+  return await ClinicsSkd.findByPk(clinicsSkdId);
 };
-const updateClinicsSkd = async (clinicsSkdId, clinicsSkdBody) => {
-    const clinicsSkd = await getClinicsSkdById(clinicsSkdId);
+const updateClinicsSkdById = async (clinicsSkdId, clinicsSkdBody) => {
+  const clinicsSkd = await getClinicsSkdById(clinicsSkdId);
   if (!clinicsSkd) {
     throw new ApiError(statusCode.NOT_FOUND, "clinics schedule not found");
   }
@@ -59,44 +59,48 @@ const updateClinicsSkd = async (clinicsSkdId, clinicsSkdBody) => {
   await ClinicsSkd.save();
   return ClinicsSkd;
 };
-const getClinicsSkdByDayAndDoctorId = async (day,doctorId) => {
-  
-   const clinicsSkds =await ClinicsSkd.findAll({
-        where: {
-            dayOfWeek: dayOfWeek,
-            doctorId: DoctorId,
-        },
-   });
-    return clinicsSkds;
+const getClinicsSkdsByDayAndDoctorId = async (day, doctorId) => {
+  const clinicsSkds = await ClinicsSkd.findAll({
+    where: {
+      dayOfWeek: day,
+      doctorId: doctorId,
+    },
+  });
+  return clinicsSkds;
 };
-const getAvaiLableClinicsSkdByDoctorId = async ( doctorId) => {
-    const isAvaiLable = 1;
-    return await ClinicsSkd.findAll({
-        where: {
-            isAvaiLable: isAvaiLable,
-            doctorId: doctorId,
-        },
-    });
+const getAvaiLableClinicsSkdsByDoctorId = async (doctorId) => {
+  const clinicsSkds = await ClinicsSkd.findAll({
+    where: {
+      isAvaiLable: 1,
+      doctorId: doctorId,
+    },
+  });
+  if (clinicsSkds.length > 0) {
+    return clinicsSkds;
+  } else {
+    throw new ApiError(statusCode.NOT_FOUND, "Doctor is not avaiLable");
+  }
 };
 
 const deleteClinicsSkdById = async (clinicsSkdId) => {
-    const clinicsSkd = await getClinicsSkdById(clinicsSkdId);
-    if (!clinicsSkd) {
-        throw new ApiError(statusCode.NOT_FOUND, "clinics schedule not found");
-    }
+  const clinicsSkd = await getClinicsSkdById(clinicsSkdId);
+  if (clinicsSkd > 0) {
     await ClinicsSkd.destroy();
     return clinicsSkd;
+  } else {
+    throw new ApiError(statusCode.NOT_FOUND, "clinics schedule not found");
+  }
 };
 
-module.exports = {  
-    createClinicsSkd,
-    // get
-    queryClinicsSkdByDoctorId,
-    getClinicsSkdById,
-    getClinicsSkdByDayAndDoctorId,
-    getAvaiLableClinicsSkdByDoctorId,
-    // update
-    updateClinicsSkd,
-    // delete
-    deleteClinicsSkdById,
+module.exports = {
+  createClinicsSkd,
+  // get
+  getClinicsSkdByDoctorId,
+  getClinicsSkdBySkdId,
+  getClinicsSkdsByDayAndDoctorId,
+  getAvaiLableClinicsSkdsByDoctorId,
+  // update
+  updateClinicsSkdById,
+  // delete
+  deleteClinicsSkdById,
 };
