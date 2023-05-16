@@ -69,7 +69,7 @@ const Patient = sequelize.define(
       },
     },
     nationality: {
-      // `nationality` int NOT NULL COMMENT 'Reference from a List of all Nationalities',
+      // `nationality` STRING NOT NULL COMMENT 'Reference from a List of all Nationalities',
       type: Sequelize.STRING,
       allowNull: false,
     },
