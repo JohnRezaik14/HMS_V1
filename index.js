@@ -1,21 +1,21 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const helmet = require('helmet');
-const xss = require('xss-clean');
-const config = require('./config/config');
-const morgan = require('./config/morgan');
-const compression = require('compression');
-const cors = require('cors');
-const passport = require('passport');
-const statusCode = require('http-status');
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const config = require("./config/config");
+const morgan = require("./config/morgan");
+const compression = require("compression");
+const cors = require("cors");
+const passport = require("passport");
+const statusCode = require("http-status");
 const path = require("path");
-const { jwtStrategy } = require('./config/passport');
-const routes = require('./routes/v1');
-const { errorConverter, errorHandler } = require('./middlewares/error');
-const ApiError = require('./utils/ApiError');
+const { jwtStrategy } = require("./config/passport");
+const routes = require("./routes/v1");
+const { errorConverter, errorHandler } = require("./middlewares/error");
+const ApiError = require("./utils/ApiError");
 const app = express();
 
-if (config.env !== 'test') {
+if (config.env !== "test") {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
 }
@@ -29,39 +29,27 @@ app.use(xss());
 // parse json request body
 app.use(express.json());
 
-
-
 // gzip compression
 app.use(compression());
 
 // enable cors
-// cors is  standard for access control for cross-origin resource sharing (CORS) 
+// cors is  standard for access control for cross-origin resource sharing (CORS)
 // on various browsers. It allows a server to indicate any other origins (domain, scheme, or port)
 app.use(cors());
-app.options('*', cors());
-
+app.options("*", cors());
 
 // jwt authentication
 app.use(passport.initialize());
-passport.use('jwt', jwtStrategy);
-
-
-
-
+passport.use("jwt", jwtStrategy);
 
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true })); //x-www-form-urlencoded <form>
 // app.use(bodyParser.json());
 
-
-
-
-
-
 // app.use(bodyParser.json());
 
 // v1 api routes
-app.use('/v1', routes);
+app.use("/v1", routes);
 app.use((err, req, res, next) => {
   if (err instanceof ApiError) {
     res.status(err.statusCode).json({
@@ -76,13 +64,13 @@ app.use((err, req, res, next) => {
       statusCode: 500,
       message: "Internal Server Error",
       isOperational: false,
-
+      stack: err.stack,
     });
   }
 });
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
-  next(new ApiError(statusCode.NOT_FOUND, 'Not found'));
+  next(new ApiError(statusCode.NOT_FOUND, "Not found"));
 });
 
 // convert error to ApiError, if needed
@@ -94,11 +82,7 @@ app.listen(port, () => {
   console.log(`listening on port ${port}`);
 });
 
-
-
-
 // end of file******************************************************************************************************************
-
 
 // app.use((req, res, next) => {
 //   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -111,10 +95,6 @@ app.listen(port, () => {
 // const Doctor = require("./models/doctor.model");
 // const patientAppt = require("./models/patientAppt.model");
 // const { where } = require("sequelize");
-
-
-
-
 
 // patientAppt.update({
 //   "startTime": "14:20",
@@ -131,11 +111,6 @@ app.listen(port, () => {
 //   console.log(err);
 // });
 
-
-
-
-
-
 // const getuser = async (userId) => {
 //   const user = await Doctor.findAll({ where: { departmentId: userId } });
 //   return user;
@@ -146,7 +121,6 @@ app.listen(port, () => {
 // }).catch((err) => {
 //   console.log(err);
 // });
-
 
 // const seq1 = require("./utils/DB");
 // Doctor.create().then((result) => {
@@ -167,7 +141,6 @@ app.listen(port, () => {
 // }).catch((err) => {
 //   console.log(err);
 // });
-
 
 // // const user=require("/models/index.User")
 
