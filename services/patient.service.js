@@ -43,7 +43,7 @@ const createPatient = async (patientBody) => {
 
   const birthDate = patientBody.birthDate; // `birthDate` date NOT NULL,
   const gender = patientBody.gender; // `gender` int NOT NULL
-  const nationality = patientBody.nationality; // `nationality` int NOT NULL
+  const nationality = patientBody.nationality; // `nationality` string NOT NULL
 
   const religion = patientBody.religion; // `religion` int DEFAULT NULL
   const maritalStatus = patientBody.maritalStatus; // `maritalStatus` int DEFAULT NULL
@@ -57,7 +57,7 @@ const createPatient = async (patientBody) => {
   const state = patientBody.state; // `state` varchar(50) NOT NULL
   const city = patientBody.city; // `city` varchar(50) DEFAULT ' '
   const street = patientBody.street; // `street` varchar(50) NOT NULL DEFAULT ' '
-  const buildingNumber = patientBody.buildingNumber; // `buildingNumber` varchar(10) NOT NULL DEFAULT ' '
+  const buildingNumber = patientBody.buildingNumber; // `buildingNumber` int NOT NULL DEFAULT ' '
   const appartment = patientBody.appartment; // `appartment` int NOT NULL DEFAULT '1'
 
   let birthPlace = patientBody.birthPlace; // `birthPlace` varchar(150) DEFAULT ' '
@@ -123,6 +123,12 @@ const createPatient = async (patientBody) => {
 
 const getPatientByUserId = async (userId) => {
   const patient = await Patient.findOne({ where: { userId: userId } });
+  if (!patient) {
+    throw new ApiError(statusCode.NOT_FOUND, "patient not found");
+  } else {
+    patient.height = parseFloat(patient.height);
+    patient.weight = parseFloat(patient.weight);
+  }
   return patient;
 };
 
@@ -133,6 +139,8 @@ const updatePatientByUserId = async (userId, updateBody) => {
   }
   Object.assign(patient, updateBody);
   await patient.save();
+  patient.height = parseFloat(patient.height);
+    patient.weight = parseFloat(patient.weight);
   return patient;
 };
 
