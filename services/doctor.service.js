@@ -6,7 +6,9 @@ const express = require("express");
 const queryDoctors = async () => {
     return Doctor.findAll();
 }
-
+const queryDoctorsDepartment = async (departmentId) => {
+    return Doctor.findAll({ where: { departmentId: departmentId } });
+}
 const getDoctorById = async (doctorId) => {
     return Doctor.findByPk(doctorId);
 }
@@ -34,6 +36,7 @@ module.exports = {
     getDoctorById,
     getDoctorByUserId,
     getDoctorByNationalId,
+    queryDoctorsDepartment
     // getDoctorByfisrtName,
     // getDoctorBysecondName,
     // getDoctorBythirdName,
