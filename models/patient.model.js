@@ -135,7 +135,7 @@ const Patient = sequelize.define(
     },
     buildingNumber: {
       // `buildingNumber` varchar(10) NOT NULL,
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       allowNull: false,
     },
     appartment: {
