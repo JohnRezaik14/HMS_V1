@@ -1,6 +1,7 @@
 // const User = require("./user.model");
 const sequelize = require("../utils/DB");
 const { Op, Sequelize } = require("sequelize");
+const ApiError = require("../utils/ApiError");
 const Patient = sequelize.define(
   "patient",
 
@@ -99,7 +100,7 @@ const Patient = sequelize.define(
       defaultValue: 0,
       validate(value) {
         if (value < 0 || value > 7) {
-          throw new Error("bloodType value must be between 0 and 7");
+          throw new ApiError("bloodType value must be between 0 and 7");
         }
       },
     },
@@ -165,12 +166,13 @@ const Patient = sequelize.define(
     },
     height: {
       //   `height` decimal(5,2) DEFAULT NULL COMMENT 'Height in cm',
-      type: Sequelize.DECIMAL(5, 2),
+      type: Sequelize.DOUBLE,
       defaultValue: null,
+     
     },
     weight: {
       //   `weight` decimal(5,2) DEFAULT NULL COMMENT 'Weight in Kg',
-      type: Sequelize.DECIMAL(5, 2),
+      type: Sequelize.DOUBLE,
       defaultValue: null,
     },
     job: {
