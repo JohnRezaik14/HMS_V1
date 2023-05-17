@@ -1,6 +1,7 @@
-const { DataTypes ,Op} = require("sequelize");
+const { DataTypes ,Op,Sequelize} = require("sequelize");
 const sequelize = require("../utils/DB");
-const doctor = require("./doctor.model");
+
+// const doctor = require("./doctor.model");
 const clinicsSkd = sequelize.define("clinics_skd", {
     skdId: {
     type: DataTypes.INTEGER,
@@ -43,6 +44,9 @@ const clinicsSkd = sequelize.define("clinics_skd", {
    allowNull: true,
   },
   
+},
+  {
+  tableName: "clinics_skd",
 },
 {
   timestamps: true,

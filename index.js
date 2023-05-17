@@ -51,13 +51,19 @@ app.use(express.urlencoded({ extended: true })); //x-www-form-urlencoded <form>
 // v1 api routes
 app.use("/v1", routes);
 app.use((err, req, res, next) => {
+  const error = err;
+  const statusCode = error.statusCode || 500;
+  const message = error.message || "Internal Server Error";
+  const isOperational = error.isOperational || false;
+  const stack = error.stack || undefined;
   if (err instanceof ApiError) {
     res.status(err.statusCode).json({
-      statusCode: err.statusCode, // Change "code" to "statusCode"
-      message: err.message,
-      isOperational: err.isOperational,
-      stack: err.stack,
+      statusCode, // Change "code" to "statusCode"
+      message ,
+      isOperational ,
+      stack ,
     });
+    console.log({ message, statusCode, isOperational, stack });
   } else {
     // Handle other types of errors or fallback to a generic error response
     res.status(500).json({
@@ -66,6 +72,7 @@ app.use((err, req, res, next) => {
       isOperational: false,
       stack: err.stack,
     });
+    console.log({ message, statusCode, isOperational, stack });
   }
 });
 // send back a 404 error for any unknown api request

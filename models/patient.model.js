@@ -1,4 +1,4 @@
-const User = require("./user.model");
+// const User = require("./user.model");
 const sequelize = require("../utils/DB");
 const { Op, Sequelize } = require("sequelize");
 const Patient = sequelize.define(
