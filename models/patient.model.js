@@ -205,12 +205,12 @@ const Patient = sequelize.define(
     },
     patientPP: {
       //   `patientPP` varchar(255) DEFAULT NULL,
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(3000),
       defaultValue: null,
     },
     patientPPHash: {
       //   `patientPPHash` varchar(45) DEFAULT NULL,
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(500),
       defaultValue: null,
     },
   },
