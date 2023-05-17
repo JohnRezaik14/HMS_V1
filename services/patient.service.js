@@ -69,6 +69,7 @@ const createPatient = async (patientBody) => {
   const birthCity = patientBody.birthCity; // `birthCity` varchar(50) DEFAULT ' '
 
   const height = patientBody.height; // `height` decimal(5,2) DEFAULT NULL
+
   const weight = patientBody.weight; // `weight` decimal(5,2) DEFAULT NULL
   const job = patientBody.job; // `job` varchar(50) DEFAULT NULL
   let jobAddress = patientBody.jobAddress; // `jobAddress` varchar(150) DEFAULT ' '
@@ -126,8 +127,8 @@ const getPatientByUserId = async (userId) => {
   if (!patient) {
     throw new ApiError(statusCode.NOT_FOUND, "patient not found");
   } else {
-    patient.height = parseFloat(patient.height);
-    patient.weight = parseFloat(patient.weight);
+    // patient.height = parseFloat(patient.height);
+    // patient.weight = parseFloat(patient.weight);
   }
   return patient;
 };
@@ -139,8 +140,8 @@ const updatePatientByUserId = async (userId, updateBody) => {
   }
   Object.assign(patient, updateBody);
   await patient.save();
-  patient.height = parseFloat(patient.height);
-    patient.weight = parseFloat(patient.weight);
+  // patient.height = parseFloat(patient.height);
+  // patient.weight = parseFloat(patient.weight);
   return patient;
 };
 

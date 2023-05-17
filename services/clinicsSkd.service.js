@@ -6,14 +6,14 @@ const doctorService = require("./doctor.service");
 
 const createClinicsSkd = async (clinicsSkdBody) => {
   const doctorId = await clinicsSkdBody.doctorId;
-  const doctor = await doctorService.getDoctorById(doctorId);
+  const doctor = await doctorService.getDoctorByDoctorId(doctorId);
   if ((await doctorId) == undefined || null) {
     throw new ApiError(statusCode.NOT_FOUND, "Doctor Id not valid");
   }
   if (!(await doctor)) {
     throw new ApiError(statusCode.NOT_FOUND, "Doctor not found");
   }
- 
+
   const startTime = clinicsSkdBody.startTime;
   const endTime = clinicsSkdBody.endTime;
   const day = clinicsSkdBody.dayOfWeek;
@@ -34,7 +34,7 @@ const getClinicsSkdBySkdId = async (clinicsSkdId) => {
 };
 const getClinicsSkdByDoctorId = async (doctorId) => {
   const DoctorId = doctorId;
-  const doctor = await doctorService.getDoctorById(DoctorId);
+  const doctor = await doctorService.getDoctorByDoctorId(DoctorId);
 
   if ((await doctorId) == undefined || null) {
     throw new ApiError(statusCode.NOT_FOUND, "Doctor Id not valid");
@@ -82,9 +82,8 @@ const updateClinicsSkdById = async (clinicsSkdId, clinicsSkdBody) => {
 };
 const deleteClinicsSkdById = async (clinicsSkdId) => {
   const clinicsSkd = await getClinicsSkdBySkdId(clinicsSkdId);
-  if (clinicsSkd ) {
+  if (clinicsSkd) {
     await clinicsSkd.destroy();
-    
   } else {
     throw new ApiError(statusCode.NOT_FOUND, "clinics schedule not found");
   }

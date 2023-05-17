@@ -1,16 +1,16 @@
 // const mongoose = require('mongoose');
 const sequelize = require('sequelize');
-const statusCode = require('http-status');
+// const statusCode = require('http-status');
 const config = require('../config/config');
 const logger = require('../config/logger');
 const ApiError = require('../utils/ApiError');
-
+const httpStatus = require('http-status');
 const errorConverter = (err, req, res, next) => {
   let error = err;
   if (!(error instanceof ApiError)) {
     const statusCode =
-      error.statusCode || error instanceof sequelize.Error ? statusCode.BAD_REQUEST : statusCode.INTERNAL_SERVER_ERROR;
-    const message = error.message || statusCode[statusCode];
+      error.statusCode || error instanceof sequelize.Error ? httpStatus.BAD_REQUEST : httpStatus.INTERNAL_SERVER_ERROR;
+    const message = error.message || httpStatus[statusCode];
     error = new ApiError(statusCode, message, false, err.stack);
   }
   next(error);
@@ -20,8 +20,8 @@ const errorConverter = (err, req, res, next) => {
 const errorHandler = (err, req, res, next) => {
   let { statusCode, message } = err;
   if (config.env === 'production' && !err.isOperational) {
-    statusCode = statusCode.INTERNAL_SERVER_ERROR;
-    message = statusCode[statusCode.INTERNAL_SERVER_ERROR];
+    statusCode = httpStatus.INTERNAL_SERVER_ERROR;
+    message = httpStatus[httpStatus.INTERNAL_SERVER_ERROR];
   }
 
   res.locals.errorMessage = err.message;

@@ -1,4 +1,5 @@
 const joi = require("joi");
+const { INTEGER } = require("sequelize");
 const getPatient = {
   body: joi.object().keys({
     userId: joi.number().required(),
@@ -32,8 +33,8 @@ const createPatient = {
     birthState: joi.string().default(" ").allow(null),
     birthCity: joi.string().default(" ").allow(null),
     phoneNumber: joi.string().required(),
-    height: joi.number().precision(2).allow(null),
-    weight: joi.number().precision(2).allow(null),
+    height: joi.number().disallow(INTEGER).precision(2).allow(null),
+    weight: joi.number().disallow(INTEGER).precision(2).allow(null),
     job: joi.string().allow(null),
     jobAddress: joi.string().default(" ").allow(null),
     jobCountry: joi.string().default(" ").allow(null),
@@ -48,7 +49,6 @@ const createPatient = {
 };
 
 const updatePatient = {
- 
   body: joi.object().keys({
     userId: joi.number().required(),
     nationalId: joi.string().length(14),
@@ -76,8 +76,8 @@ const updatePatient = {
     birthState: joi.string().default(" "),
     birthCity: joi.string().default(" "),
     phoneNumber: joi.string(),
-    height: joi.number().precision(2).allow(null),
-    weight: joi.number().precision(2).allow(null),
+    height: joi.number().disallow(INTEGER).precision(2).allow(null),
+    weight: joi.number().disallow(INTEGER).precision(2).allow(null),
     job: joi.string().allow(null),
     jobAddress: joi.string().default(" "),
     jobCountry: joi.string().default(" "),

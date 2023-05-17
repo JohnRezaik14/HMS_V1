@@ -56,7 +56,7 @@ const queryAvaiLableClinicsSkdsByDoctorId = catchAsync(async (req, res) => {
         req.body.doctorId
     );
     
-    const doctor = await doctorService.getDoctorById(req.body.doctorId);
+    const doctor = await doctorService.getDoctorByDoctorId(req.body.doctorId);
     res.send({
         clinicsSkds,
         statusCode: 200,

@@ -1,5 +1,5 @@
 const express = require("express");
-const auth = require("../../middlewares/auth");
+// const auth = require("../../middlewares/auth");
 const validate = require("../../middlewares/validate");
 const patientValidation = require("../../validations/patient.validation");
 const patientController = require("../../controllers/patient.controller");

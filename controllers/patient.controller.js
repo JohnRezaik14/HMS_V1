@@ -7,13 +7,11 @@ const patientService = require("../services/patient.service");
 const createPatient = catchAsync(async (req, res) => {
   const reqPatient = await patientService.createPatient(req.body);
   const patient = await patientService.getPatientByUserId(reqPatient.userId);
-  res
-    .status(statusCode.CREATED)
-    .send({
-      patient,
-      statusCode: 201,
-      message: "Patient account created successfully",
-    });
+  res.status(statusCode.CREATED).send({
+    patient,
+    statusCode: 201,
+    message: "Patient account created successfully",
+  });
 });
 
 const getPatient = catchAsync(async (req, res) => {
@@ -29,6 +27,17 @@ const getPatient = catchAsync(async (req, res) => {
 });
 
 const updatePatient = catchAsync(async (req, res) => {
+  // const height = req.body.height;
+  // const heightType = (height).length;
+  // if (heightType<4) {
+  //   // console.log(height);
+  //   throw new ApiError(statusCode.BAD_REQUEST,"Height value must be decimal");
+  // }
+  // const weight = req.body.weight;
+  // const weightType = (weight).length;
+  // if (weightType < 4) {
+  //   throw new ApiError(statusCode.BAD_REQUEST, "Weight value must be decimal");
+  // }
   const reqPatient = await patientService.updatePatientByUserId(
     req.body.userId,
     req.body
