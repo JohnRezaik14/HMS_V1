@@ -81,11 +81,11 @@ const doctor = sequelize.define(
       allowNull: true,
     },
     imageUrl: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(3000),
       allowNull: true,
     },
     imageHash: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(500),
       allowNull: true,
     },
     noOfPatients: {
