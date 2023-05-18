@@ -1,5 +1,5 @@
 const statusCode = require("http-status");
-const { Doctor, ClinicsSkd } = require("../models");
+const { Patinet,Doctor, ClinicsSkd } = require("../models");
 const { Op } = require("sequelize");
 const ApiError = require("../utils/ApiError");
 const { string } = require("joi");
@@ -15,16 +15,22 @@ const { string } = require("joi");
 // update appointment same as reschedule done 
 // get appointment by doctor id
 // delete appointment if was created by mistake
-
+const getPatientIdByUserId = async (userId) => {
+    const patinet = await Patinet.findOne({ where: { userId:userId } });
+    if (!patinet) {
+        throw new ApiError(statusCode.NOT_FOUND, "UserId not valid");
+    }
+    return patinet.patientId;
+};
 const createAppointment = async (appointmentBody) => {
   const {
     clinicsSkdId,
-    patientId,
     date,
     patientComplaint,
     note,
-    cancelReason,
-  } = appointmentBody;
+    // cancelReason,
+    } = appointmentBody;
+    const patientId = await getPatientIdByUserId(appointmentBody.userId);
   const clinicsSkd = await ClinicsSkd.findByPk(clinicsSkdId);
   if (!clinicsSkd) {
     throw new ApiError(
@@ -40,7 +46,8 @@ const createAppointment = async (appointmentBody) => {
   const departmentId = doctor.departmentId;
   const doctorImageUrl = doctor.imageUrl;
   const doctorImageHash = doctor.imageHash;
-  const apptState = "upcoming";
+    const apptState = "upcoming";
+    const cancelReason = null;
   const report = null;
   const appointment = await PatientAppt.create({
     patientId,
@@ -62,7 +69,8 @@ const createAppointment = async (appointmentBody) => {
   return appointment;
 };
 
-const getUpcomingAppointments = async (patientId) => {
+const getUpcomingAppointments = async (userId) => {
+    const patientId = await getPatientIdByUserId(userId);
   const appointments = await PatientAppt.findAll({
     where: {
       patientId: patientId,
@@ -77,7 +85,8 @@ const getUpcomingAppointments = async (patientId) => {
   return appointments;
 };
 
-const getCompletedAppointments = async (patientId) => {
+const getCompletedAppointments = async (userId) => {
+    const patientId = await getPatientIdByUserId(userId);
     const appointments = await PatientAppt.findAll({
         where: {
             patientId: patientId,
@@ -92,7 +101,8 @@ const getCompletedAppointments = async (patientId) => {
     return appointments;
 };
 
-const getCancelledAppointments = async (patientId) => {
+const getCancelledAppointments = async (userId) => {
+    const patientId = await getPatientIdByUserId(userId);
     const appointments = await PatientAppt.findAll({
         where: {
             patientId: patientId,
@@ -196,7 +206,7 @@ const getAppointmentsByDoctorIdByState = async (doctorId, state) => {
     return appointments;
 };
 const getAppointmentsByDoctorId = async (doctorId,option) => {
-    const option = option;
+    // const option = option;
     let appointments = [];
     switch (option) {
         case "upcoming":

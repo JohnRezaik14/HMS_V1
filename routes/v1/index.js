@@ -6,6 +6,7 @@ const config = require("../../config/config");
 const doctorRoute = require("./doctor.route");
 const patientRoute = require("./patient.route");
 const clinicsSkdRoute = require("./clinicsSkd.route");
+const patientApptRoute = require("./patientAppt.route");
 const router = express.Router();
 
 const defaultRoutes = [
@@ -28,7 +29,11 @@ const defaultRoutes = [
   {
     path: "/clinicsSkds",
     route: clinicsSkdRoute,
-  }
+  },
+  {
+    path: "/Appts",
+    route: patientApptRoute,
+  },
 ];
 
 const devRoutes = [
