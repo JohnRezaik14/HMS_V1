@@ -24,8 +24,10 @@ const router = express.Router();
 // getDoctorsByHighestNoOfPatientsInHospitalAndDepartment,
 // getDoctorsByHighestYearsOfExperience,
 // getDoctorsByHighestYearsOfExperienceInHospital,
-router.route("/").get(doctorController.getDoctors);
-// .post(validate(doctorValidation.createDoctor), doctorController.createDoctor)
+router
+  .route("/")
+  .get(doctorController.getDoctors)
+  .post(validate(doctorValidation.createDoctor), doctorController.createDoctor);
 router
   .route("/doctorId")
   .get(
@@ -39,9 +41,15 @@ router
   .get(
     validate(doctorValidation.getDoctorByUserId),
     doctorController.getDoctorByUserId
+  )
+  .patch(
+    validate(doctorValidation.updateDoctorByUserId),
+    doctorController.updateDoctorByUserId
+  )
+  .delete(
+    validate(doctorValidation.deleteDoctorByUserId),
+    doctorController.deleteDoctorByUserId
   );
-// .patch(validate(doctorValidation.updateDoctor), doctorController.updateDoctor)
-// .delete(validate(doctorValidation.deleteDoctor), doctorController.deleteDoctor);
 router
   .route("/nationalId")
   .get(

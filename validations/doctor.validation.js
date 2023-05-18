@@ -1,4 +1,5 @@
 const joi = require("joi");
+
 // getDoctors,
 //   getDoctorByUserId,
 //   getDoctorByDoctorId,
@@ -210,20 +211,123 @@ const getDoctorsByHighestYearsOfExperienceInHospital = {
   }),
 };
 const getDoctorsByDegree = {
-    body: joi.object().keys({
-        degree: joi.number().integer().messages({
-            "any.required": "degree is required",
-            "number.base": "degree must be a number",
-        }),
+  body: joi.object().keys({
+    degree: joi.number().integer().messages({
+      "any.required": "degree is required",
+      "number.base": "degree must be a number",
     }),
+  }),
 };
 const getDoctorsByPosition = {
-    body: joi.object().keys({
-        position: joi.number().integer().messages({
-            "any.required": "postion is required",
-            "number.base": "postion must be a number",
-        }),
+  body: joi.object().keys({
+    position: joi.number().integer().messages({
+      "any.required": "postion is required",
+      "number.base": "postion must be a number",
     }),
+  }),
+};
+const createDoctor = {
+  body: joi.object().keys({
+    firstName: joi.string().required().messages({
+      "any.required": "firstName is required",
+    }),
+    secondName: joi.string().required().messages({
+      "any.required": "secondName is required",
+    }),
+    thirdName: joi.string().required().messages({
+      "any.required": "thirdName is required",
+    }),
+    lastName: joi.string().required().messages({
+      "any.required": "lastName is required",
+    }),
+    fullName: joi.string().allow(null),
+    userId: joi.number().integer().required().messages({
+      "number.base": "userId must be a number",
+    }),
+    nationalId: joi.string().length(14).required().messages({
+      "any.required": "nationalId is required",
+      "string.length": "nationalId must be 14 characters",
+    }),
+    degree: joi.number().integer().min(0).max(6).required().messages({
+      "any.required": "degree is required",
+      "number.base": "degree must be a number between 0 and 6",
+    }),
+    position: joi.number().integer().min(0).max(8).required().messages({
+      "any.required": "position is required",
+      "number.base": "position must be a number between 0 and 8",
+    }),
+    yearsOfExperience: joi.number().integer().min(0).allow(null).messages({
+      "number.base": "yearsOfExperience must be a number",
+    }),
+    noOfPatients: joi.number().integer().min(0).required().messages({
+      "any.required": "noOfPatients is required",
+      "number.base": "noOfPatients must be a number",
+    }),
+    gradDate: joi.date().required().messages({
+      "any.required": "gradDate is required",
+      "date.base": "gradDate must be a date",
+    }),
+    imageUrl: joi.string().required().messages({
+      "any.required": "imageUrl is required",
+    }),
+    imageHash: joi.string().allow(null).messages({
+      "Invalid image": "Invalid image string",
+    }),
+    hospitalName: joi.string().required().default("General Hospital").messages({
+      "any.required": "hospitalName is required",
+    }),
+    departmentName: joi.string().required().messages({
+      "any.required": "departmentName is required",
+    }),
+    aboutMe: joi.string().required().messages({
+      "any.required": "aboutMe is required",
+    }),
+    note: joi.string().allow(null),
+  }),
+};
+const updateDoctorByUserId = {
+  body: joi.object().keys({
+    firstName: joi.string(),
+    secondName: joi.string(),
+    thirdName: joi.string(),
+    lastName: joi.string(),
+    fullName: joi.string(),
+    userId: joi.number().integer().required().messages({
+      "number.base": "userId must be a number",
+    }),
+    nationalId: joi.string().length(14).messages({
+      "string.length": "nationalId must be 14 characters",
+    }),
+    degree: joi.number().integer().min(0).max(6).messages({
+      "number.base": "degree must be a number between 0 and 6",
+    }),
+    position: joi.number().integer().min(0).max(8).messages({
+      "number.base": "position must be a number between 0 and 8",
+    }),
+    yearsOfExperience: joi.number().integer().min(0).allow(null).messages({
+      "number.base": "yearsOfExperience must be a number",
+    }),
+    noOfPatients: joi.number().integer().min(0).messages({
+      "number.base": "noOfPatients must be a number",
+    }),
+    gradDate: joi.date().messages({
+      "date.base": "gradDate must be a date",
+    }),
+    imageUrl: joi.string(),
+    imageHash: joi.string().allow(null),
+    hospitalName: joi.string().default("General Hospital"),
+    departmentName: joi.string(),
+    aboutMe: joi.string(),
+    note: joi.string().allow(null),
+  }),
+};
+const deleteDoctorByUserId = {
+  body: joi.object().keys({
+    userId: joi.number().integer().required().messages({
+      "number.base": "userId must be a number",
+      "any.required": "userId is required",
+    }),
+  }),
 };
 
 // const getDoctorsByHighestYearsOfExperienceInDepartment = {
@@ -271,7 +375,9 @@ module.exports = {
   getDoctorsByHighestYearsOfExperienceInHospital,
   getDoctorsByDegree,
   getDoctorsByPosition,
-  
+  createDoctor,
+  updateDoctorByUserId,
+  deleteDoctorByUserId,
   // getDoctorsByHighestYearsOfExperienceInDepartment,
   // getDoctorsByHighestYearsOfExperienceInHospitalAndDepartment,
 };

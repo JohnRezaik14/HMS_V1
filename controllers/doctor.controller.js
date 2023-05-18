@@ -26,6 +26,11 @@ const doctorQueries = [
   doctorService.getDoctorsByHighestYearsOfExperienceInHospital,
   doctorService.getDoctorsByDegree,
   doctorService.getDoctorsByPosition,
+  doctorService.createDoctor,
+  doctorService.updateDoctor,
+  doctorService.updateDoctorByUserId,
+  doctorService.deleteDoctor,
+  doctorService.deleteDoctorByUserId,
 ];
 const departmentMapping = {
   Anesthetics: 0,
@@ -241,6 +246,52 @@ const getDoctorsByPosition = catchAsync(async (req, res) => {
   });
 });
 
+const createDoctor = catchAsync(async (req, res) => {
+  const doctor = await doctorQueries[22](req.body);
+
+  res.send({
+    doctor,
+    statusCode: 200,
+    message: "Doctor Created Successfully",
+  });
+});
+
+const updateDoctor = catchAsync(async (req, res) => {
+  const doctor = await doctorQueries[23](req.body);
+  res.send({
+    doctor,
+    statusCode: 200,
+    message: "Doctor Updated Successfully",
+  });
+});
+
+const updateDoctorByUserId = catchAsync(async (req, res) => {
+  const doctor = await doctorQueries[24](req.body);
+  res.send({
+    doctor,
+    statusCode: 200,
+    message: "Doctor Updated Successfully",
+  });
+});
+
+const deleteDoctor = catchAsync(async (req, res) => {
+  const doctor = await doctorQueries[25](req.body);
+  res.send({
+    doctor,
+    statusCode: 200,
+    message: "Doctor Deleted Successfully",
+  });
+});
+
+const deleteDoctorByUserId = catchAsync(async (req, res) => {
+  const doctor = await doctorQueries[26](req.body);
+  res.send({
+    doctor,
+    statusCode: 200,
+    message: "Doctor Deleted Successfully",
+  });
+});
+
 // const getDoctorsByHighestYearsOfExperienceInDepartment = catchAsync(async (req, res) => {
 //   const result = await doctorQueries[21](req.body.departmentName);
 //   res.send({ result, statusCode: 200, message: "Doctors By Highest Years Of Experience In Department" });
@@ -288,4 +339,9 @@ module.exports = {
   // getDoctorsByHighestNoOfPatientsAndHighestYearsOfExperienceInHospital,
   getDoctorsByDegree,
   getDoctorsByPosition,
+  createDoctor,
+  updateDoctor,
+  updateDoctorByUserId,
+  deleteDoctor,
+  deleteDoctorByUserId,
 };

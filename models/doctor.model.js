@@ -22,7 +22,7 @@ const doctor = sequelize.define(
     },
     nationalId: {
       type: Sequelize.CHAR(14),
-      allowNull: true,
+      allowNull: false,
       trim: true,
       minlength: 14,
       maxlength: 14,
@@ -34,20 +34,20 @@ const doctor = sequelize.define(
     },
     firstName: {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: false,
       trim: true,
     },
     secondName: {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     thirdName: {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     lastName: {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     degree: {
       type: Sequelize.INTEGER,
@@ -56,11 +56,11 @@ const doctor = sequelize.define(
           throw new Error("Degree must be between 0 and 6");
         }
       },
-      allowNull: true,
+      allowNull: false,
     },
     position: {
       type: Sequelize.INTEGER,
-      allowNull: true,
+      allowNull: false,
       validate(value) {
         if (value < 0 && value > 8) {
           throw new Error("Position must be between 0 and 8");
@@ -69,7 +69,7 @@ const doctor = sequelize.define(
     },
     departmentId: {
       type: Sequelize.INTEGER,
-      allowNull: true,
+      allowNull: false,
       validate(value) {
         if (value < 0 && value > 8) {
           throw new Error("Position must be between 0 and 8");
@@ -78,11 +78,11 @@ const doctor = sequelize.define(
     },
     hospitalName: {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     imageUrl: {
       type: Sequelize.STRING(3000),
-      allowNull: true,
+      allowNull: false,
     },
     imageHash: {
       type: Sequelize.STRING(500),
@@ -90,8 +90,13 @@ const doctor = sequelize.define(
     },
     noOfPatients: {
       type: Sequelize.INTEGER,
-      allowNull: true,
+      allowNull: false,
     },
+    gradDate: {
+      type: Sequelize.DATE,
+      allowNull: false,
+    },
+    
     yearsOfExperience: {
       type: Sequelize.INTEGER,
       allowNull: true,
