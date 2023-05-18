@@ -47,15 +47,15 @@ const patientAppt = sequelize.define(
       },
       foreignKey: "patientId",
     },
-    clinicssSkdId: {
-      //   `clinicssSkdId` int NOT NULL,
+    clinicsSkdId: {
+      //   `clinicsSkdId` int NOT NULL,
       type: Sequelize.INTEGER,
       allowNull: false,
       references: {
         model: "clinics_skd",
-        key: "clinicssSkdId",
+        key: "skdId",
       },
-      foreignKey: "clinicssSkdId",
+      foreignKey: "clinicsSkdId",
     },
     note: {
       //   `note` text,
@@ -66,26 +66,26 @@ const patientAppt = sequelize.define(
     doctorName: {
       //   `doctorName` varchar(500) DEFAULT NULL,
       type: Sequelize.STRING(500),
-      allowNull: true,
-      defaultValue: null,
+      allowNull: false,
+     
     },
     hospitalName: {
       //   `hospitalName` varchar(255) DEFAULT NULL,
       type: Sequelize.STRING(255),
-      allowNull: true,
-      defaultValue: null,
+      allowNull: false,
+      
     },
-    department: {
+    departmentId: {
       //   `department` varchar(255) DEFAULT NULL,
-      type: Sequelize.STRING(255),
-      allowNull: true,
-      defaultValue: null,
+      type: Sequelize.INTEGER,
+      allowNull: false,
+     
     },
     doctorImageUrl: {
       //   `doctorImageUrl` varchar(3000) DEFAULT NULL,
       type: Sequelize.STRING(3000),
-      allowNull: true,
-      defaultValue: null,
+      allowNull: false,
+     
     },
     doctorImageHash: {
       //   `doctorImageHash` varchar(500) DEFAULT NULL,
@@ -118,14 +118,14 @@ module.exports = patientAppt;
 
 // `apptId` int NOT NULL AUTO_INCREMENT,
 //   `patientId` int NOT NULL,
-//   `clinicssSkdId` int NOT NULL,
+//   `clinicsSkdId` int NOT NULL,
 //   `date` date NOT NULL,
 //   `startTime` time NOT NULL,
 //   `endTime` time NOT NULL,
 //   `apptState` enum('upcoming','canceled','completed') NOT NULL DEFAULT 'upcoming',
 //   `report` text,
 //   `doctorName` varchar(500) DEFAULT NULL,
-//   `hospitalName` varchar(255) DEFAULT NULL,
+//   `hospitalName` int DEFAULT NULL,
 //   `department` varchar(255) DEFAULT NULL,
 //   `doctorImageUrl` varchar(3000) DEFAULT NULL,
 //   `doctorImageHash` varchar(500) DEFAULT NULL,

@@ -96,7 +96,7 @@ const doctor = sequelize.define(
       type: Sequelize.DATE,
       allowNull: false,
     },
-    
+
     yearsOfExperience: {
       type: Sequelize.INTEGER,
       allowNull: true,
@@ -108,6 +108,12 @@ const doctor = sequelize.define(
     note: {
       type: Sequelize.STRING,
       allowNull: true,
+    },
+    departmentImageUrl: {
+      type: Sequelize.STRING(3000),
+    },
+    departmentImageHash: {
+      type: Sequelize.STRING(500),
     },
   },
 

@@ -53,7 +53,6 @@ const departmentMapping = {
   Urology: 17,
   Dentistry: 18,
   neorocycatric: 19,
-  Cardiothorac: 20,
 };
 
 const getDoctors = catchAsync(async (req, res) => {

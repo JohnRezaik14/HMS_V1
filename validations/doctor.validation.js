@@ -319,6 +319,7 @@ const updateDoctorByUserId = {
     departmentName: joi.string(),
     aboutMe: joi.string(),
     note: joi.string().allow(null),
+    
   }),
 };
 const deleteDoctorByUserId = {
