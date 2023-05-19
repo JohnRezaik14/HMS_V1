@@ -1,4 +1,5 @@
 const joi = require("joi");
+const { departmentName } = require("./custom.validation");
 
 // getDoctors,
 //   getDoctorByUserId,
@@ -57,9 +58,10 @@ const getDoctorByUserId = {
   }),
 };
 const getDoctorsByDepartmentName = {
-  body: joi.object().keys({
-    departmentName: joi.string().required().messages({
+  params: joi.object().keys({
+    departmentName: joi.custom(departmentName).required().messages({
       "any.required": "departmentName is required",
+
     }),
   }),
 };
@@ -319,7 +321,6 @@ const updateDoctorByUserId = {
     departmentName: joi.string(),
     aboutMe: joi.string(),
     note: joi.string().allow(null),
-    
   }),
 };
 const deleteDoctorByUserId = {

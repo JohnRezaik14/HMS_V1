@@ -107,7 +107,7 @@ router
   );
 
 router
-  .route("/department")
+  .route("/department/:departmentName")
   .get(
     validate(doctorValidation.getDoctorsByDepartmentName),
     doctorController.getDoctorsByDepartmentName

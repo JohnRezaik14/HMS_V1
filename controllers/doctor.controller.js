@@ -60,8 +60,11 @@ const getDoctors = catchAsync(async (req, res) => {
   res.send({ doctors, statusCode: 200, message: "All Doctors" });
 });
 const getDoctorsByDepartmentName = catchAsync(async (req, res) => {
+  if (await !Number.isInteger(departmentMapping[req.params.departmentName])) {
+    throw new ApiError(statusCode.NOT_FOUND, "Department Not Found");
+  }
   const doctors = await doctorQueries[1](
-    departmentMapping[req.body.departmentName]
+    departmentMapping[req.params.departmentName]
   );
   res.send({ doctors, statusCode: 200, message: "Doctors By Department Id" });
 });
