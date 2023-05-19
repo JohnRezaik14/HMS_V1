@@ -14,8 +14,17 @@ const password = (value, helpers) => {
   }
   return value;
 };
-
+const departmentName = (value, helpers) => {
+  if (!value.match(/^[a-zA-Z]+$/)) {
+    return helpers.message('department name must contain only letters');
+  }
+  if (value.length < 3) {
+    return helpers.message('department name must be at least 3 characters');
+  }
+  return value;
+};
 module.exports = {
   objectId,
   password,
+  departmentName,
 };

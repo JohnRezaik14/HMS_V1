@@ -2,7 +2,8 @@ const statusCode = require("http-status");
 const { Patient, Doctor, ClinicsSkd, PatientAppt } = require("../models");
 const { Op, STRING } = require("sequelize");
 const ApiError = require("../utils/ApiError");
-const { string } = require("joi");
+
+const moment = require("moment-timezone");
 // const { doctorService, clinicsSkdService } = require("../services");
 
 // services
@@ -26,14 +27,32 @@ const getPatientIdByUserId = async (userId) => {
   return patinet.patientId;
 };
 const createAppointment = async (appointmentBody) => {
+  const dateStr = appointmentBody.date;
+  const timeZone = moment.tz.guess();
+  const localDate = moment(dateStr).tz(timeZone).toDate();
+  const date = localDate;
   const {
     clinicsSkdId,
-    date,
     patientComplaint,
     note,
     // cancelReason,
-  } = appointmentBody;
+  } = await appointmentBody;
   const patientId = await getPatientIdByUserId(appointmentBody.userId);
+  const oldAppointment = await PatientAppt.findAll({
+    where: {
+      patientId: patientId,
+      date: date,
+      clinicsSkdId: clinicsSkdId,
+    },
+  });
+  // console.log(oldAppointment + "oldAppointment");
+  if (oldAppointment.length > 0) {
+    throw new ApiError(
+      statusCode.BAD_REQUEST,
+      "Appointment already exists , you must select another date or clinics skd"
+    );
+  }
+
   const clinicsSkd = await ClinicsSkd.findByPk(clinicsSkdId);
   if (!clinicsSkd) {
     throw new ApiError(
@@ -154,7 +173,8 @@ const updateAppointment = async (apptId, apptBody) => {
   const doctorImageUrl = doctor.imageUrl;
   const doctorImageHash = doctor.imageHash;
   const apptState = apptBody.apptState || "upcoming";
-  const patientComplaint = apptBody.patientComplaint || appointment.patientComplaint;
+  const patientComplaint =
+    apptBody.patientComplaint || appointment.patientComplaint;
   const cancelReason = apptBody.cancelReason || appointment.cancelReason;
   const report = apptBody.report || appointment.report;
   const note = apptBody.note || appointment.note;
@@ -278,9 +298,17 @@ const getAppointmentsByDoctorId = async (doctorId, option) => {
 
     //   break;
     default:
-      appointments = await PatientAppt.findAll({
+      const clinicsSkds = await clincsSkdsByDoctorId(doctorId);
+      const clinicsSkdsIds = clinicsSkds.map(
+        (clinicsSkd) => clinicsSkd.clinicsSkdId
+      );
+    
+       appointments = await PatientAppt.findAll({
         where: {
-          // doctorId: doctorId,
+          clinicsSkdId: {
+            [Op.in]: clinicsSkdsIds,
+          },
+          
         },
         order: [
           ["date", "DESC"],

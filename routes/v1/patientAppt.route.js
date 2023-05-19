@@ -18,10 +18,7 @@ router
     validate(patientApptValidation.createAppointment),
     patientApptController.createAppointment
   )
-  .get(
-    validate(patientApptValidation.getAppointmentsByDoctorId),
-    patientApptController.getAppointmentsByDoctorId
-  )
+
   .patch(
     validate(patientApptValidation.updateAppointment),
     patientApptController.updateAppointment
@@ -30,24 +27,29 @@ router
     validate(patientApptValidation.deleteAppointment),
     patientApptController.deleteAppointment
   );
-
+router
+  .route("/doctorId")
+  .post(
+    validate(patientApptValidation.getAppointmentsByDoctorId),
+    patientApptController.getAppointmentsByDoctorId
+  );
 router
   .route("/upcoming")
-  .get(
+  .post(
     validate(patientApptValidation.getUpcomingAppointments),
     patientApptController.getUpcomingAppointments
   );
 
 router
   .route("/completed")
-  .get(
+  .post(
     validate(patientApptValidation.getCompletedAppointments),
     patientApptController.getCompletedAppointments
   );
 
 router
   .route("/cancelled")
-  .get(
+  .post(
     validate(patientApptValidation.getCancelledAppointments),
     patientApptController.getCancelledAppointments
   );

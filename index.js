@@ -85,8 +85,10 @@ app.use(errorConverter);
 // handle error
 app.use(errorHandler);
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`listening on port ${port}`);
+const ip = "localhost";
+// '10.5.150.83' ||
+app.listen(port, ip,() => {
+  console.log(`listening on http://${ip}:${port}`);
 });
 
 // end of file******************************************************************************************************************

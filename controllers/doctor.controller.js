@@ -35,7 +35,7 @@ const doctorQueries = [
 const departmentMapping = {
   Anesthetics: 0,
   Cardiology: 1,
-  ENT: 2,
+  'Ear, nose and throat (ENT)': 2,
   Gastroenterology: 3,
   "General Surgery": 4,
   Gynecology: 5,
@@ -60,6 +60,9 @@ const getDoctors = catchAsync(async (req, res) => {
   res.send({ doctors, statusCode: 200, message: "All Doctors" });
 });
 const getDoctorsByDepartmentName = catchAsync(async (req, res) => {
+  if (await !Number.isInteger(departmentMapping[req.body.departmentName])) {
+    throw new ApiError(statusCode.NOT_FOUND, "Department Not Found");
+  }
   const doctors = await doctorQueries[1](
     departmentMapping[req.body.departmentName]
   );
