@@ -1,5 +1,5 @@
 const statusCode = require("http-status");
-const { User, Patient } = require("../models");
+const { User, Patient , Doctor, ClinicsSkd, PatientAppt } = require("../models");
 const { Op } = require("sequelize");
 const ApiError = require("../utils/ApiError");
 const userService = require("./user.service");
@@ -132,7 +132,8 @@ const getPatientByUserId = async (userId) => {
   }
   return patient;
 };
-
+// const getPatientByClinicSkdByDate = async (clinicSkdId, date) => {
+  
 const updatePatientByUserId = async (userId, updateBody) => {
   const patient = await getPatientByUserId(userId);
   if (!patient) {

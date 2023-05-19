@@ -298,9 +298,17 @@ const getAppointmentsByDoctorId = async (doctorId, option) => {
 
     //   break;
     default:
-      appointments = await PatientAppt.findAll({
+      const clinicsSkds = await clincsSkdsByDoctorId(doctorId);
+      const clinicsSkdsIds = clinicsSkds.map(
+        (clinicsSkd) => clinicsSkd.clinicsSkdId
+      );
+    
+       appointments = await PatientAppt.findAll({
         where: {
-          // doctorId: doctorId,
+          clinicsSkdId: {
+            [Op.in]: clinicsSkdsIds,
+          },
+          
         },
         order: [
           ["date", "DESC"],
