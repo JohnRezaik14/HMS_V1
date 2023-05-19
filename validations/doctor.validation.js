@@ -58,8 +58,8 @@ const getDoctorByUserId = {
   }),
 };
 const getDoctorsByDepartmentName = {
-  params: joi.object().keys({
-    departmentName: joi.custom(departmentName).required().messages({
+  body: joi.object().keys({
+    departmentName: joi.string().required().messages({
       "any.required": "departmentName is required",
 
     }),

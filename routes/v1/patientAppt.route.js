@@ -18,10 +18,7 @@ router
     validate(patientApptValidation.createAppointment),
     patientApptController.createAppointment
   )
-  .get(
-    validate(patientApptValidation.getAppointmentsByDoctorId),
-    patientApptController.getAppointmentsByDoctorId
-  )
+
   .patch(
     validate(patientApptValidation.updateAppointment),
     patientApptController.updateAppointment
@@ -30,7 +27,12 @@ router
     validate(patientApptValidation.deleteAppointment),
     patientApptController.deleteAppointment
   );
-
+router
+  .route("/doctorId")
+  .post(
+    validate(patientApptValidation.getAppointmentsByDoctorId),
+    patientApptController.getAppointmentsByDoctorId
+  );
 router
   .route("/upcoming")
   .get(

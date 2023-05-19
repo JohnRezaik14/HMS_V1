@@ -30,7 +30,7 @@ router
   .post(validate(doctorValidation.createDoctor), doctorController.createDoctor);
 router
   .route("/doctorId")
-  .get(
+  .post(
     validate(doctorValidation.getDoctorByDoctorId),
     doctorController.getDoctorByDoctorId
   );
@@ -107,21 +107,21 @@ router
   );
 
 router
-  .route("/department/:departmentName")
-  .get(
+  .route("/department/")
+  .post(
     validate(doctorValidation.getDoctorsByDepartmentName),
     doctorController.getDoctorsByDepartmentName
   );
 
 router
   .route("/degree")
-  .get(
+  .post(
     validate(doctorValidation.getDoctorsByDegree),
     doctorController.getDoctorsByDegree
   );
 router
   .route("/position")
-  .get(
+  .post(
     validate(doctorValidation.getDoctorsByPosition),
     doctorController.getDoctorsByPosition
   );

@@ -16,7 +16,7 @@ router
 
 router
   .route("/get")
-  .get(validate(patientValidation.getPatient), patientController.getPatient);
+  .post(validate(patientValidation.getPatient), patientController.getPatient);
 router
   .route("/update")
   .patch(
