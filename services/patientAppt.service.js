@@ -2,7 +2,7 @@ const statusCode = require("http-status");
 const { Patient, Doctor, ClinicsSkd, PatientAppt } = require("../models");
 const { Op, STRING } = require("sequelize");
 const ApiError = require("../utils/ApiError");
-const { string } = require("joi");
+
 const moment = require("moment-timezone");
 // const { doctorService, clinicsSkdService } = require("../services");
 
@@ -37,20 +37,22 @@ const createAppointment = async (appointmentBody) => {
     note,
     // cancelReason,
   } = await appointmentBody;
+  const patientId = await getPatientIdByUserId(appointmentBody.userId);
   const oldAppointment = await PatientAppt.findAll({
     where: {
+      patientId: patientId,
       date: date,
       clinicsSkdId: clinicsSkdId,
     },
   });
-  console.log(oldAppointment + "oldAppointment");
+  // console.log(oldAppointment + "oldAppointment");
   if (oldAppointment.length > 0) {
     throw new ApiError(
       statusCode.BAD_REQUEST,
       "Appointment already exists , you must select another date or clinics skd"
     );
   }
-  const patientId = await getPatientIdByUserId(appointmentBody.userId);
+
   const clinicsSkd = await ClinicsSkd.findByPk(clinicsSkdId);
   if (!clinicsSkd) {
     throw new ApiError(

@@ -35,7 +35,7 @@ const doctorQueries = [
 const departmentMapping = {
   Anesthetics: 0,
   Cardiology: 1,
-  ENT: 2,
+  'Ear, nose and throat (ENT)': 2,
   Gastroenterology: 3,
   "General Surgery": 4,
   Gynecology: 5,

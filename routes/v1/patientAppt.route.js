@@ -35,21 +35,21 @@ router
   );
 router
   .route("/upcoming")
-  .get(
+  .post(
     validate(patientApptValidation.getUpcomingAppointments),
     patientApptController.getUpcomingAppointments
   );
 
 router
   .route("/completed")
-  .get(
+  .post(
     validate(patientApptValidation.getCompletedAppointments),
     patientApptController.getCompletedAppointments
   );
 
 router
   .route("/cancelled")
-  .get(
+  .post(
     validate(patientApptValidation.getCancelledAppointments),
     patientApptController.getCancelledAppointments
   );
