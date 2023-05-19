@@ -144,11 +144,19 @@ const cancelAppointment = async (apptId, cancelReason) => {
   if (!appointment) {
     throw new ApiError(statusCode.NOT_FOUND, "Appointment not found");
   }
-  const updatedAppointment = await PatientAppt.update({
-    apptState: "cancelled",
-    cancelReason: cancelReason,
-  });
-  return updatedAppointment;
+  await appointment.update(
+    {
+      apptState: "cancelled",
+      cancelReason: cancelReason,
+    },
+    {
+      where: {
+        apptId: apptId,
+      },
+    }
+  );
+  await appointment.save();
+  return appointment;
 };
 const updateAppointment = async (apptId, apptBody) => {
   const appointment = await PatientAppt.findByPk(apptId);
@@ -302,13 +310,12 @@ const getAppointmentsByDoctorId = async (doctorId, option) => {
       const clinicsSkdsIds = clinicsSkds.map(
         (clinicsSkd) => clinicsSkd.clinicsSkdId
       );
-    
-       appointments = await PatientAppt.findAll({
+
+      appointments = await PatientAppt.findAll({
         where: {
           clinicsSkdId: {
             [Op.in]: clinicsSkdsIds,
           },
-          
         },
         order: [
           ["date", "DESC"],
