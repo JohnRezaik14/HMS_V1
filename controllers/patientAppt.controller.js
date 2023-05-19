@@ -16,7 +16,7 @@ const getUpcomingAppointments = catchAsync(async (req, res) => {
   const appointments = await patientApptService.getUpcomingAppointments(
     req.body.userId
   );
-  if (!appointments) {
+  if (appointments.length === 0) {
     throw new ApiError(
       statusCode.NOT_FOUND,
       "You have no upcoming appointments"
@@ -33,7 +33,7 @@ const getCompletedAppointments = catchAsync(async (req, res) => {
   const appointments = await patientApptService.getCompletedAppointments(
     req.body.userId
   );
-  if (!appointments) {
+  if (appointments.length === 0) {
     throw new ApiError(
       statusCode.NOT_FOUND,
       "You have no completed appointments"
@@ -50,7 +50,7 @@ const getCancelledAppointments = catchAsync(async (req, res) => {
   const appointments = await patientApptService.getCancelledAppointments(
     req.body.userId
   );
-  if (!appointments) {
+  if (appointments.length === 0) {
     throw new ApiError(
       statusCode.NOT_FOUND,
       "You have no cancelled appointments"
@@ -111,7 +111,7 @@ const getAppointmentsByDoctorId = catchAsync(async (req, res) => {
     const appointments = await patientApptService.getAppointmentsByDoctorId(
         req.body.doctorId , req.body.option
     );
-    if (!appointments) {
+    if (appointments.length === 0) {
         throw new ApiError(statusCode.NOT_FOUND, "No appointments found");
     }
     res.send({
