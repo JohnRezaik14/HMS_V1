@@ -33,7 +33,7 @@ const patientAppt = sequelize.define(
     },
     apptState: {
       //   `apptState` enum('upcoming','canceled','completed') DEFAULT 'upcoming',
-      type: Sequelize.ENUM("upcoming", "canceled", "completed"),
+      type: Sequelize.ENUM("upcoming", "cancelled", "completed"),
       defaultValue: "upcoming",
       allowNull: false,
     },
@@ -122,7 +122,7 @@ module.exports = patientAppt;
 //   `date` date NOT NULL,
 //   `startTime` time NOT NULL,
 //   `endTime` time NOT NULL,
-//   `apptState` enum('upcoming','canceled','completed') NOT NULL DEFAULT 'upcoming',
+//   `apptState` enum('upcoming','cancelled','completed') NOT NULL DEFAULT 'upcoming',
 //   `report` text,
 //   `doctorName` varchar(500) DEFAULT NULL,
 //   `hospitalName` int DEFAULT NULL,

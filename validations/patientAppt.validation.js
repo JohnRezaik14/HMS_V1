@@ -117,7 +117,7 @@ const updateAppointment = {
     }),
     apptState: joi
       .string()
-      .valid("upcoming", "canceled", "completed")
+      .valid("upcoming", "cancelled", "completed")
       .allow(null)
       .messages({
         "string.base": `apptState should be a type of 'string'`,
