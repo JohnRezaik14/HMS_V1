@@ -1,6 +1,8 @@
 const statusCode = require("http-status");
 const { User, Doctor } = require("../models");
 const ApiError = require("../utils/ApiError");
+const { Op, STRING } = require("sequelize");
+const findModel = require("../utils/model.find");
 const departmentMapping = {
   Anesthetics: 0,
   Cardiology: 1,
@@ -77,8 +79,12 @@ const createDoctor = async (doctorBody) => {
 };
 
 // All get methods
+// const getDoctors = async () => {
+//   const doctors = await Doctor.findAll();
+//   return doctors;
+// };
 const getDoctors = async () => {
-  const doctors = await Doctor.findAll();
+  const doctors = await findModel.findAllByOne(Doctor, "doctorId", 1);
   return doctors;
 };
 const getDoctorsByDegree = async (degree) => {

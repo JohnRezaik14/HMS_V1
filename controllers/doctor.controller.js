@@ -2,7 +2,8 @@ const statusCode = require("http-status");
 const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
 const doctorService = require("../services/doctor.service");
-
+const findModel = require("../utils/model.find");
+const {Doctor} = require("../models");
 const doctorQueries = [
   doctorService.getDoctors,
   doctorService.getDoctorsByDepartmentId,
@@ -63,9 +64,15 @@ const getDoctorsByDepartmentName = catchAsync(async (req, res) => {
   if (await !Number.isInteger(departmentMapping[req.body.departmentName])) {
     throw new ApiError(statusCode.NOT_FOUND, "Department Not Found");
   }
-  const doctors = await doctorQueries[1](
+  const doctors = await findModel.findAllByOne(
+    Doctor,
+    "departmentId",
     departmentMapping[req.body.departmentName]
   );
+
+  // const doctors = await doctorQueries[1](
+  //   departmentMapping[req.body.departmentName]
+  // );
   res.send({ doctors, statusCode: 200, message: "Doctors By Department Id" });
 });
 

@@ -230,14 +230,17 @@ const clincsSkdsByDoctorId = async (doctorId) => {
       doctorId: doctorId,
     },
   });
+  // console.log((clinicsSkds) + " in line 223");
   return clinicsSkds;
 };
+
 const getAppointmentsByDoctorIdByState = async (doctorId, state) => {
   const clinicsSkds = await clincsSkdsByDoctorId(doctorId);
+  // console.log(clinicsSkds + " in line 237")
   const clinicsSkdsIds = clinicsSkds.map(
-    (clinicsSkd) => clinicsSkd.clinicsSkdId
+    (clinicsSkd) => clinicsSkd.dataValues.clinicsSkdId
   );
-
+  // console.log(clinicsSkdsIds+ "clinicsskdsids in line 241")
   const appointments = await PatientAppt.findAll({
     where: {
       clinicsSkdId: {
@@ -250,7 +253,7 @@ const getAppointmentsByDoctorIdByState = async (doctorId, state) => {
       ["startTime", "DESC"],
     ],
   });
-
+  // console.log(appointments+ " in line 253")
   return appointments;
 };
 const getAppointmentsByDoctorId = async (doctorId, option) => {
@@ -269,7 +272,7 @@ const getAppointmentsByDoctorId = async (doctorId, option) => {
         );
       }
       break;
-    case "completed":
+    case "   ":
       appointments = await getAppointmentsByDoctorIdByState(
         doctorId,
         "completed"
