@@ -83,6 +83,16 @@ const createDoctor = async (doctorBody) => {
 //   const doctors = await Doctor.findAll();
 //   return doctors;
 // };
+const findAllByOne = (model, key, value) => {
+  // const { model } = require("../models");
+  const { Op, STRING } = require("sequelize");
+const doctors =  model.findAll({
+      where: {
+          [key]: value,
+      },
+  });
+  return doctors;
+};
 const getDoctors = async () => {
   const doctors = await findModel.findAllByOne(Doctor, "doctorId", 1);
   return doctors;
@@ -305,4 +315,5 @@ module.exports = {
   updateDoctorByUserId,
   deleteDoctor,
   deleteDoctorByUserId,
+  findAllByOne
 };

@@ -2,37 +2,38 @@ const statusCode = require("http-status");
 const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
 const doctorService = require("../services/doctor.service");
-const findModel = require("../utils/model.find");
+// const findModel = require("../utils/model.find");
 const {Doctor} = require("../models");
-const doctorQueries = [
-  doctorService.getDoctors,
-  doctorService.getDoctorsByDepartmentId,
-  doctorService.getDoctorByDoctorId,
-  doctorService.getDoctorByUserId,
-  doctorService.getDoctorByNationalId,
-  doctorService.getDoctorsByFisrtName,
-  doctorService.getDoctorsBySecondName,
-  doctorService.getDoctorsByThirdName,
-  doctorService.getDoctorsByLastName,
-  doctorService.getDoctorsByFisrtNameAndSecondName,
-  doctorService.getDoctorsByFisrtNameAndSecondNameAndThirdName,
-  doctorService.getDoctorByFullName,
-  doctorService.getDoctorsByHospitalName,
-  doctorService.getDoctorsByHospitalNameAndDepartmentName,
-  doctorService.getDoctorsByHighestNoOfPatients,
-  doctorService.getDoctorsByHighestNoOfPatientsInHospital,
-  doctorService.getDoctorsByHighestNoOfPatientsInDepartment,
-  doctorService.getDoctorsByHighestNoOfPatientsInHospitalAndDepartment,
-  doctorService.getDoctorsByHighestYearsOfExperience,
-  doctorService.getDoctorsByHighestYearsOfExperienceInHospital,
-  doctorService.getDoctorsByDegree,
-  doctorService.getDoctorsByPosition,
-  doctorService.createDoctor,
-  doctorService.updateDoctor,
-  doctorService.updateDoctorByUserId,
-  doctorService.deleteDoctor,
-  doctorService.deleteDoctorByUserId,
-];
+// const doctorQueries = [
+//   doctorService.getDoctors,
+//   // doctorService.getDoctorsByDepartmentId,
+//   // doctorService.getDoctorByDoctorId,
+//   // doctorService.getDoctorByUserId,
+//   // doctorService.getDoctorByNationalId,
+//   // doctorService.getDoctorsByFisrtName,
+//   // doctorService.getDoctorsBySecondName,
+//   // doctorService.getDoctorsByThirdName,
+//   // doctorService.getDoctorsByLastName,
+//   doctorService.getDoctorsByFisrtNameAndSecondName,
+//   doctorService.getDoctorsByFisrtNameAndSecondNameAndThirdName,
+//   doctorService.getDoctorByFullName,
+//   doctorService.getDoctorsByHospitalName,
+//   doctorService.getDoctorsByHospitalNameAndDepartmentName,
+//   doctorService.getDoctorsByHighestNoOfPatients,
+//   doctorService.getDoctorsByHighestNoOfPatientsInHospital,
+//   doctorService.getDoctorsByHighestNoOfPatientsInDepartment,
+//   doctorService.getDoctorsByHighestNoOfPatientsInHospitalAndDepartment,
+//   doctorService.getDoctorsByHighestYearsOfExperience,
+//   doctorService.getDoctorsByHighestYearsOfExperienceInHospital,
+//   doctorService.getDoctorsByDegree,
+//   doctorService.getDoctorsByPosition,
+//   doctorService.createDoctor,
+//   doctorService.updateDoctor,
+//   doctorService.updateDoctorByUserId,
+//   doctorService.deleteDoctor,
+//   doctorService.deleteDoctorByUserId,
+//   doctorService.findAllByOne,
+// ];
 const departmentMapping = {
   Anesthetics: 0,
   Cardiology: 1,
@@ -57,14 +58,14 @@ const departmentMapping = {
 };
 
 const getDoctors = catchAsync(async (req, res) => {
-  const doctors = await doctorQueries[0]();
+  const doctors = await doctorService.getDoctors();
   res.send({ doctors, statusCode: 200, message: "All Doctors" });
 });
 const getDoctorsByDepartmentName = catchAsync(async (req, res) => {
   if (await !Number.isInteger(departmentMapping[req.body.departmentName])) {
     throw new ApiError(statusCode.NOT_FOUND, "Department Not Found");
   }
-  const doctors = await findModel.findAllByOne(
+  const doctors = await doctorService.findAllByOne(
     Doctor,
     "departmentId",
     departmentMapping[req.body.departmentName]
@@ -77,7 +78,7 @@ const getDoctorsByDepartmentName = catchAsync(async (req, res) => {
 });
 
 const getDoctorByDoctorId = catchAsync(async (req, res) => {
-  const doctor = await doctorQueries[2](req.body.doctorId);
+  const doctor = await doctorService.getDoctorByDoctorId(req.body.doctorId);
   if (doctor.length === 0) {
     throw new ApiError(statusCode.NOT_FOUND, "Doctor Not Found");
   }
@@ -85,18 +86,23 @@ const getDoctorByDoctorId = catchAsync(async (req, res) => {
 });
 
 const getDoctorByUserId = catchAsync(async (req, res) => {
-  const doctor = await doctorQueries[3](req.body.userId);
+  const doctor = await doctorService.getDoctorByUserId(req.body.userId);
   res.send({ doctor, statusCode: 200, message: "Doctor By User Id" });
 });
 
 const getDoctorByNationalId = catchAsync(async (req, res) => {
-  const doctor = await doctorQueries[4](req.body.nationalId);
+  const doctor = await doctorService.getDoctorByNationalId(req.body.nationalId);
   res.send({ doctor, statusCode: 200, message: "Doctor By National Id" });
 });
 
 const getDoctorsByFisrtName = catchAsync(async (req, res) => {
-  const doctor = await doctorQueries[5](req.body.firstName);
-  res.send({ doctor, statusCode: 200, message: "Doctors By First Name" });
+  
+  const doctors = await doctorService.findAllByOne(
+    Doctor,
+    "firstName",
+    req.body.firstName
+  );
+  res.send({ doctors, statusCode: 200, message: "Doctors By First Name" });
 });
 
 const getDoctorsBySecondName = catchAsync(async (req, res) => {
