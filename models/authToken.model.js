@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../utils/DB");
 const { User } = require("./index");
 
-const AuthToken = sequelize.define("AuthToken", {
+const AuthToken = sequelize.define("auth_token", {
   token: {
     type: DataTypes.STRING,
     allowNull: false,
