@@ -1,5 +1,5 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const config = require("./config/config");
@@ -8,7 +8,7 @@ const compression = require("compression");
 const cors = require("cors");
 const passport = require("passport");
 const statusCode = require("http-status");
-const path = require("path");
+// const path = require("path");
 const { jwtStrategy } = require("./config/passport");
 const routes = require("./routes/v1");
 const { errorConverter, errorHandler } = require("./middlewares/error");
